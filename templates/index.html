@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Trang Chủ - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hero card">
+    <div class="hero-content">
+        <img src="{% static 'images/logonew.jpg' %}" alt="Logo" class="hero-logo">
+        <h1>Chào Mừng Đến Với Bò Nhúng Giấm Ngày Xưa!</h1>
+        <p>Trải nghiệm hương vị truyền thống Việt Nam với nguyên liệu tươi ngon và đam mê ẩm thực</p>
+        <div class="hero-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'menu' %}" class="hero-btn">
+                    <i class="fas fa-utensils"></i> Xem Thực Đơn
+                </a>
+                <a href="#" class="hero-btn">
+                    <i class="fas fa-shopping-cart"></i> Đặt Món Ngay
+                </a>
+            {% else %}
+                <a href="{% url 'signup' %}" class="hero-btn">
+                    <i class="fas fa-user-plus"></i> Đăng Ký Ngay
+                </a>
+                <a href="{% url 'menu' %}" class="hero-btn">
+                    <i class="fas fa-utensils"></i> Xem Thực Đơn
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if latest_news %}
+<section>
+    <h2 class="section-title">📰 Tin Tức & Khuyến Mãi Mới Nhất</h2>
+    <div class="grid">
+        {% for news in latest_news %}
+        <a href="{% url 'feed_detail' news.id %}" class="news-card">
+            <div class="news-card-media">
+                {% if news.video %}
+                    <!-- Video Preview with Autoplay -->
+                    <video
+                        autoplay
+                        loop
+                        muted
+                        playsinline
+                        preload="auto">
+                        <source src="{{ news.video.url }}" type="video/mp4">
+                    </video>
+                    <div class="video-badge">
+                        🎬 Video
+                    </div>
+                    <div class="news-overlay">
+                        <i class="fas fa-play-circle"></i>
+                        Xem Video
+                    </div>
+                {% elif news.image %}
+                    <!-- Image -->
+                    <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                    <div class="news-overlay">
+                        <i class="fas fa-arrow-right"></i>
+                        Đọc Thêm
+                    </div>
+                {% else %}
+                    <!-- No Media -->
+                    <div class="no-media-icon">📰</div>
+                    <div class="news-overlay">
+                        <i class="fas fa-arrow-right"></i>
+                        Đọc Thêm
+                    </div>
+                {% endif %}
+            </div>
+            <div class="news-card-content">
+                <h3>{{ news.title }}</h3>
+                <p>{{ news.content|truncatewords:30 }}</p>
+                <small>
+                    <i class="fas fa-calendar"></i>
+                    {{ news.created_at|date:"d/m/Y" }}
+                </small>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="section-cta">
+        <a href="{% url 'feeds' %}" class="view-reviews-btn">Xem Tất Cả Tin Tức</a>
+    </div>
+</section>
+{% endif %}
+
+{% if featured_items %}
+<section>
+    <h2 class="section-title">⭐ Món Ăn Nổi Bật</h2>
+    <div class="grid">
+        {% for item in featured_items %}
+        <div class="item-card">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description|truncatewords:15 }}</p>
+            <div class="price">{{ item.price|vnd_format }} <span class="currency">₫</span></div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="section-cta">
+        <a href="{% url 'menu' %}" class="view-reviews-btn">Xem Toàn Bộ Thực Đơn</a>
+    </div>
+</section>
+{% endif %}
+
+<!-- Google Reviews Section -->
+<section class="reviews-section">
+    <div class="container">
+        <h2 class="section-title">⭐ Đánh Giá Từ Khách Hàng</h2>
+        <p class="reviews-intro">
+            Xem các đánh giá từ khách hàng thực tế trên Google Maps
+        </p>
+
+        <div class="google-maps-container">
+            <!-- Google Maps Embed -->
+            <div class="map-wrapper">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.54092675725733!2d105.77067548793478!3d10.038286149532776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0883d181a2ee1%3A0x5d8f6ec3df7f6c9!2zQsOyIE5ow7puZyBHaeG6pW0gTmfDoHkgWMaw!5e0!3m2!1svi!2svn!4v1234567890!5m2!1svi!2svn"
+                    width="100%"
+                    height="450"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <!-- Review Summary Card -->
+            <div class="review-summary">
+                <div class="rating-overview">
+                    <div class="rating-score">
+                        <span class="score">4.8</span>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="review-count">Nhiều đánh giá trên Google</p>
+                    </div>
+                </div>
+
+                <div class="review-highlights">
+                    <div class="highlight-item">
+                        <i class="fas fa-utensils"></i>
+                        <span>Thực đơn đa dạng</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>Chất lượng tuyệt vời</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-smile"></i>
+                        <span>Phục vụ tận tình</span>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Vị trí thuận tiện</span>
+                    </div>
+                </div>
+
+                <a href="https://www.google.com/maps/place/B%C3%B2+Nh%C3%BAng+Gi%E1%BA%A5m+-+Ng%C3%A0y+X%C6%B0a/@10.0220114,105.7425938,17z/data=!4m18!1m9!3m8!1s0x31a0890057173d5d:0xacf5028e89f13e4!2zQsOyIE5ow7puZyBHaeG6pW0gLSBOZ8OgeSBYxrBh!8m2!3d10.0220061!4d105.7451687!9m1!1b1!16s%2Fg%2F11m5xwxfnb!3m7!1s0x31a0890057173d5d:0xacf5028e89f13e4!8m2!3d10.0220061!4d105.7451687!9m1!1b1!16s%2Fg%2F11m5xwxfnb?entry=ttu&g_ep=EgoyMDI1MTIwMi4wIKXMDSoASAFQAw%3D%3D"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="view-reviews-btn">
+                    <i class="fab fa-google"></i>
+                    Xem Tất Cả Đánh Giá
+                </a>
+
+                <a href="https://www.google.com/maps/place/B%C3%B2+Nh%C3%BAng+Gi%E1%BA%A5m+-+Ng%C3%A0y+X%C6%B0a/@10.0220114,105.7425938,17z/data=!4m18!1m9!3m8!1s0x31a0890057173d5d:0xacf5028e89f13e4!2zQsOyIE5ow7puZyBHaeG6pW0gLSBOZ8OgeSBYxrBh!8m2!3d10.0220061!4d105.7451687!9m1!1b1!16s%2Fg%2F11m5xwxfnb!3m7!1s0x31a0890057173d5d:0xacf5028e89f13e4!8m2!3d10.0220061!4d105.7451687!9m1!1b1!16s%2Fg%2F11m5xwxfnb?entry=ttu&g_ep=EgoyMDI1MTIwMi4wIKXMDSoASAFQAw%3D%3D"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="write-review-btn">
+                    <i class="fas fa-edit"></i>
+                    Viết Đánh Giá
+                </a>
+            </div>
+        </div>
+
+        <!-- Sample Reviews -->
+        <div class="sample-reviews">
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4>Tieu Nghi Le</h4>
+                            <div class="review-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">"Nước lẩu của quán ngọt ngọt, chua chua, thanh thanh dùng rất vừa miệng, thịt bò mềm và tươi, rau sạch. Quán không quá đông, không khí thoải mái, nhân viên nhiệt tình. Mình sẽ quay lại ủng hộ"</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4>Tiên Thủy</h4>
+                            <div class="review-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">"Bò nhúng giấm ở Cần Thơ chỉ có chỗ này đúng gu mình nhất. Vị thanh vừa, hông bị chua giấm. Thịt và rau đều tươi. Mãi ủng hộ"</p>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4>Hàng Anh Tài</h4>
+                            <div class="review-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="review-text">"Quán ăn truyền thống tuyệt vời! Bò nhúng giấm đúng vị, gia vị đậm đà. Có thêm mấy chiến hữu xưa để ôn lại chuyện cũ thì quá tuyệt vời."</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

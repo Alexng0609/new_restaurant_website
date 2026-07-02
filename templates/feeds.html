@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tin Tức - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📰 Tin Tức & Khuyến Mãi</h1>
+    <p>Cập nhật tin tức mới nhất từ nhà hàng</p>
+</div>
+
+{% if user.is_staff %}
+<div class="admin-add-button">
+    <a href="/admin/restaurant/newsfeed/add/" class="view-reviews-btn">
+        <i class="fas fa-plus-circle"></i> Thêm Tin Tức Mới
+    </a>
+</div>
+{% endif %}
+
+<div class="grid grid-lg">
+    {% if news_feeds %}
+        {% for news in news_feeds %}
+        <div class="news-card-wrapper">
+            {% if user.is_staff %}
+            <div class="admin-controls">
+                <a href="/admin/restaurant/newsfeed/{{ news.id }}/change/" class="admin-btn">
+                    <i class="fas fa-edit"></i> Sửa
+                </a>
+            </div>
+            {% endif %}
+
+            <a href="{% url 'feed_detail' news.id %}" class="news-card">
+                <div class="news-card-media">
+                    {% if news.video %}
+                        <!-- Video Display with Autoplay -->
+                        <video autoplay loop muted playsinline preload="metadata">
+                            <source src="{{ news.video.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-badge">
+                            🎬 Video
+                        </div>
+                        <div class="news-overlay">
+                            <i class="fas fa-play-circle"></i>
+                            Xem Video
+                        </div>
+                    {% elif news.image %}
+                        <!-- Image Display -->
+                        <img src="{{ news.image.url }}" alt="{{ news.title }}">
+                        <div class="news-overlay">
+                            <i class="fas fa-arrow-right"></i>
+                            Đọc Thêm
+                        </div>
+                    {% else %}
+                        <!-- No Media -->
+                        <div class="no-media-icon">📰</div>
+                        <div class="news-overlay">
+                            <i class="fas fa-arrow-right"></i>
+                            Đọc Thêm
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="news-card-content">
+                    <div class="news-date">
+                        📅 {{ news.created_at|date:"d/m/Y" }}
+                    </div>
+                    <h2 class="news-title">{{ news.title }}</h2>
+                    <p class="news-text">{{ news.content|truncatewords:30 }}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <h2>Chưa có tin tức</h2>
+            <p>Hãy quay lại sau để xem tin tức mới nhất!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bò Nhúng Giấm Ngày Xưa{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="{% static 'images/logonew.jpg' %}">
+
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Site Styles (sidebar/hamburger menu styles now live here too) -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="{% url 'index' %}" class="logo">
+                <img src="{% static 'images/logonew.jpg' %}" alt="Bò Nhúng Giấm Ngày Xưa" onerror="this.style.display='none'">
+                <div class="logo-text">
+                    <span class="main">Bò Nhúng Giấm</span>
+                    <span class="sub">Ngày Xưa</span>
+                </div>
+            </a>
+
+            <div class="nav-actions">
+                <!-- Cart icon with badge -->
+                <a href="#" class="cart-link">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge" id="cart-count">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+
+                <!-- Sidebar toggle: opens the full page menu -->
+                <button type="button" class="sidebar-toggle" id="sidebarToggle"
+                        aria-label="Mở menu" aria-expanded="false" aria-controls="sideMenu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Backdrop -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- All site pages live in this sidebar -->
+    <aside class="side-menu" id="sideMenu" aria-hidden="true">
+        <div class="side-menu-header">
+            <span>Menu</span>
+            <button type="button" class="side-menu-close" id="sideMenuClose" aria-label="Đóng menu">&times;</button>
+        </div>
+        <ul class="side-menu-links">
+            <li><a href="{% url 'index' %}"><i class="fas fa-house"></i> Trang Chủ</a></li>
+            <li><a href="{% url 'feeds' %}"><i class="fas fa-newspaper"></i> Tin Tức</a></li>
+            <li><a href="{% url 'menu' %}"><i class="fas fa-utensils"></i> Thực Đơn</a></li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <!-- Orders + reports management for admin -->
+                    <li><a href="#"><i class="fas fa-clipboard-list"></i> Đơn Hàng</a></li>
+                    <li><a href="#"><i class="fas fa-chart-column"></i> Báo Cáo</a></li>
+                {% else %}
+                    <!-- History + profile for regular users -->
+                    <li><a href="#"><i class="fas fa-clock-rotate-left"></i> Lịch Sử</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Hồ Sơ</a></li>
+                {% endif %}
+
+                <li>
+                    <!-- Logout must be a POST request with a CSRF token, never a plain GET link -->
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">
+                            <i class="fas fa-right-from-bracket"></i> Đăng Xuất
+                        </button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}"><i class="fas fa-right-to-bracket"></i> Đăng Nhập</a></li>
+                <li><a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Đăng Ký</a></li>
+            {% endif %}
+        </ul>
+    </aside>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">
+                        <img src="{% static 'images/logonew.jpg' %}"
+                            alt="Bò Nhúng Giấm Ngày Xưa"
+                        >
+                        <h3>Bò Nhúng Giấm Ngày Xưa</h3>
+                    </a>
+                </div>
+                <p>Món Ăn Truyền Thống Việt Nam</p>
+
+                <!-- Address and contact info -->
+                <div class="footer-contact">
+                    <div>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <a href="https://maps.google.com/?q=Bò+Nhúng+Giấm+Ngày+Xưa,+Cần+Thơ"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            238 Nguyễn Hiền, KDC 91B, Tân An, Cần Thơ
+                        </a>
+                    </div>
+                    <div>
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:laubonhunggiamngayxua@gmail.com">
+                            laubonhunggiamngayxua@gmail.com
+                        </a>
+                    </div>
+                    <div>
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:0706623568">
+                            070 662 3568
+                        </a>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.facebook.com/search/top?q=Bò%20Nhúng%20Giấm%20Ngày%20Xưa" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.tiktok.com/@bonhunggiamngayxua?_r=1&_t=ZS-91uRtTjYabR" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <p>&copy; 2024 Bò Nhúng Giấm Ngày Xưa. Bản quyền thuộc về.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Site Scripts (sidebar toggle logic now lives here too) -->
+    <script src="{% static 'js/base.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
