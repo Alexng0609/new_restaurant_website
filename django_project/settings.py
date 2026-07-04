@@ -38,6 +38,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+
 EMAIL_BACKEND = "django.core.email.backends.console.EmailBackend"
 # Application definition
 
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     # Local apps
     "accounts",
     "restaurant_site",
+    "orders",
     # 3rd Party
     "crispy_forms",
     "crispy_bootstrap5",
@@ -79,6 +81,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "orders.context_processors.cart_count",
             ],
         },
     },

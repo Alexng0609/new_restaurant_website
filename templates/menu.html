@@ -72,7 +72,7 @@
             <div class="price-tag">{{ item.price|vnd_format }} ₫</div>
 
             <!-- Add to cart form -->
-            <form class="add-btn-form add-to-cart-form" method="post" action="#" data-item-name="{{ item.name }}">
+            <form class="add-btn-form add-to-cart-form" method="post" action="{% url 'add_to_cart' item.id %}" data-item-name="{{ item.name }}">
                 {% csrf_token %}
                 <input type="hidden" name="quantity" value="1">
                 <button type="submit" class="add-btn" {% if not item.is_available %}disabled{% endif %}>

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Thanh Toán - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Thanh Toán</h1>
+    <p>Điền thông tin giao hàng để hoàn tất đơn hàng</p>
+</div>
+
+<div class="review-summary">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><strong>Thanh toán:</strong> Tiền mặt khi nhận hàng</p>
+        <button type="submit" class="view-reviews-btn">Xác Nhận Đặt Hàng</button>
+    </form>
+</div>
+
+<h2 class="section-title">Đơn Hàng Của Bạn</h2>
+
+<div class="grid grid-lg">
+    {% for cart_item in cart.items.all %}
+    <div class="item-card">
+        <h3>{{ cart_item.menu_item.name }}</h3>
+        <p>{{ cart_item.quantity }} x {{ cart_item.menu_item.price|vnd_format }} ₫</p>
+        <p class="price">{{ cart_item.subtotal|vnd_format }} ₫</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="cta-section">
+    <h2>Tổng Cộng: {{ cart.total_price|vnd_format }} ₫</h2>
+</div>
+{% endblock %}

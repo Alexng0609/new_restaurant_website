@@ -34,7 +34,7 @@
 
             <div class="nav-actions">
                 <!-- Cart icon with badge -->
-                <a href="#" class="cart-link">
+                <a href="{% url 'cart_detail' %}" class="cart-link">
                     <i class="fas fa-shopping-cart cart-icon"></i>
                     {% if cart_count > 0 %}
                     <span class="cart-badge" id="cart-count">{{ cart_count }}</span>
