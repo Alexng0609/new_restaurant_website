@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Thêm Món Ăn Mới - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "Add Menu Item" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/form.css' %}">
@@ -9,7 +10,8 @@
 
 {% block content %}
 <div class="page-header">
-    <h1>🍽️ Thêm Món Ăn Mới</h1>
+    <h1>🍽️ {% trans "Add Menu Item" %}</h1>
+    <p>{% trans "Item names stay in Vietnamese. Add an English description for EN mode, or leave blank to auto-translate." %}</p>
 </div>
 
 <div class="detail-panel form-card">
@@ -17,43 +19,49 @@
         {% csrf_token %}
 
         <div class="form-group">
-            <label for="{{ form.name.id_for_label }}">Tên Món</label>
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
             {{ form.name }}
             {% if form.name.errors %}<div class="form-errors">{{ form.name.errors }}</div>{% endif %}
         </div>
 
         <div class="form-group">
-            <label for="{{ form.description.id_for_label }}">Mô Tả</label>
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             {{ form.description }}
             {% if form.description.errors %}<div class="form-errors">{{ form.description.errors }}</div>{% endif %}
         </div>
 
         <div class="form-group">
-            <label for="{{ form.price.id_for_label }}">Giá (₫)</label>
+            <label for="{{ form.description_en.id_for_label }}">{{ form.description_en.label }}</label>
+            {{ form.description_en }}
+            {% if form.description_en.errors %}<div class="form-errors">{{ form.description_en.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.price.id_for_label }}">{% trans "Price (₫)" %}</label>
             {{ form.price }}
             {% if form.price.errors %}<div class="form-errors">{{ form.price.errors }}</div>{% endif %}
         </div>
 
         <div class="form-group">
-            <label for="{{ form.category.id_for_label }}">Danh Mục</label>
+            <label for="{{ form.category.id_for_label }}">{% trans "Category" %}</label>
             {{ form.category }}
             {% if form.category.errors %}<div class="form-errors">{{ form.category.errors }}</div>{% endif %}
         </div>
 
         <div class="form-group">
-            <label for="{{ form.image.id_for_label }}">Hình Ảnh (không bắt buộc)</label>
+            <label for="{{ form.image.id_for_label }}">{% trans "Image (optional)" %}</label>
             {{ form.image }}
             {% if form.image.errors %}<div class="form-errors">{{ form.image.errors }}</div>{% endif %}
         </div>
 
         <div class="form-group form-check">
             {{ form.is_available }}
-            <label for="{{ form.is_available.id_for_label }}">Còn Hàng</label>
+            <label for="{{ form.is_available.id_for_label }}">{% trans "In stock" %}</label>
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="add-btn">Thêm Món</button>
-            <a href="{% url 'menu' %}" class="view-reviews-btn">Hủy</a>
+            <button type="submit" class="add-btn">{% trans "Add Item" %}</button>
+            <a href="{% url 'menu' %}" class="view-reviews-btn">{% trans "Cancel" %}</a>
         </div>
     </form>
 </div>

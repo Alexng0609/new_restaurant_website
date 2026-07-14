@@ -1,0 +1,651 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: restaurant_website\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+msgid "\"%(name)s\" added to cart."
+msgstr "Đã thêm \"%(name)s\" vào giỏ hàng!"
+
+msgid "A wonderful traditional restaurant! Authentic vinegar hot pot flavor, rich seasoning. Catching up with old friends here is absolutely perfect."
+msgstr "Quán ăn truyền thống tuyệt vời! Bò nhúng giấm đúng vị, gia vị đậm đà. Có thêm mấy chiến hữu xưa để ôn lại chuyện cũ thì quá tuyệt vời."
+
+msgid "Account created successfully. Please log in."
+msgstr "Tạo tài khoản thành công. Vui lòng đăng nhập."
+
+msgid "Add Item"
+msgstr "Thêm Món"
+
+msgid "Add Menu Item"
+msgstr "Thêm Món Ăn"
+
+msgid "Add News Post"
+msgstr "Thêm Tin Tức Mới"
+
+msgid "Add to cart"
+msgstr "Thêm vào giỏ"
+
+msgid "Adding..."
+msgstr "Đang thêm..."
+
+msgid "ADMIN_CANCEL_CODE is not configured in settings — contact an administrator."
+msgstr "Chưa thiết lập ADMIN_CANCEL_CODE trong settings — liên hệ quản trị viên."
+
+msgid "Advance to"
+msgstr "Chuyển Sang"
+
+msgid "All"
+msgstr "Tất Cả"
+
+msgid "All rights reserved."
+msgstr "Bản quyền thuộc về."
+
+msgid "Already have an account?"
+msgstr "Đã có tài khoản?"
+
+msgid "Attentive service"
+msgstr "Phục vụ tận tình"
+
+msgid "Average Order Value"
+msgstr "Giá Trị TB / Đơn"
+
+msgid "Average order value"
+msgstr "Giá trị đơn trung bình"
+
+msgid "Back"
+msgstr "Quay Lại"
+
+msgid "Back to Cart"
+msgstr "Quay Lại Giỏ Hàng"
+
+msgid "Back to login"
+msgstr "Quay lại đăng nhập"
+
+msgid "Back to Menu"
+msgstr "Quay Lại Thực Đơn"
+
+msgid "Back to News"
+msgstr "Quay Lại Tin Tức"
+
+msgid "Back to Profile"
+msgstr "Quay Lại Hồ Sơ"
+
+msgid "Back to Reports"
+msgstr "Quay Lại Báo Cáo"
+
+msgid "Browse Menu"
+msgstr "Xem Thực Đơn"
+
+msgid "by"
+msgstr "bởi"
+
+msgid "Cancel"
+msgstr "Hủy"
+
+msgid "Cancel Order"
+msgstr "Hủy Đơn"
+
+msgid "Cancel Order #%(number)s"
+msgstr "Hủy Đơn #%(number)s"
+
+msgid "Cancellation reason"
+msgstr "Lý do hủy"
+
+msgid "cancelled"
+msgstr "đã hủy"
+
+msgid "Cancelled"
+msgstr "Đã hủy"
+
+msgid "Cancelled at"
+msgstr "Hủy lúc"
+
+msgid "Cancelled Orders"
+msgstr "Đơn Hủy"
+
+msgid "Cart"
+msgstr "Giỏ Hàng"
+
+msgid "Cash on delivery"
+msgstr "Tiền mặt khi nhận hàng"
+
+msgid "Category"
+msgstr "Danh Mục"
+
+msgid "Change my password"
+msgstr "Đổi mật khẩu"
+
+msgid "Change Password"
+msgstr "Đổi Mật Khẩu"
+
+msgid "Check back later for the latest updates!"
+msgstr "Hãy quay lại sau để xem tin tức mới nhất!"
+
+msgid "Check your inbox."
+msgstr "Kiểm tra hộp thư của bạn."
+
+msgid "Checkout"
+msgstr "Thanh Toán"
+
+msgid "Close menu"
+msgstr "Đóng menu"
+
+msgid "Completed Orders"
+msgstr "Đơn Hoàn Thành"
+
+msgid "completed orders"
+msgstr "đơn hoàn thành"
+
+msgid "Confirm Cancellation"
+msgstr "Xác Nhận Hủy Đơn"
+
+msgid "Confirm Order"
+msgstr "Xác Nhận Đặt Hàng"
+
+msgid "Confirmation code is incorrect."
+msgstr "Mã xác nhận không đúng."
+
+msgid "Confirmed"
+msgstr "Đã xác nhận"
+
+msgid "Content"
+msgstr "Nội Dung"
+
+msgid "Content (English)"
+msgstr "Nội dung (Tiếng Anh)"
+
+msgid "Content (Vietnamese)"
+msgstr "Nội dung (Tiếng Việt)"
+
+msgid "Convenient location"
+msgstr "Vị trí thuận tiện"
+
+msgid "Create an Account"
+msgstr "Tạo Tài Khoản Ngay"
+
+msgid "Create an account to track orders and earn reward points."
+msgstr "Tạo tài khoản để theo dõi đơn hàng và tích điểm thưởng."
+
+msgid "Current password"
+msgstr "Mật khẩu hiện tại"
+
+msgid "Customer"
+msgstr "Khách hàng"
+
+msgid "Customer Reviews"
+msgstr "Đánh Giá Từ Khách Hàng"
+
+msgid "Delivered"
+msgstr "Đã giao"
+
+msgid "Delivery"
+msgstr "Giao hàng"
+
+msgid "Delivery address"
+msgstr "Địa chỉ giao hàng"
+
+msgid "Description"
+msgstr "Mô Tả"
+
+msgid "Description (English)"
+msgstr "Mô tả (Tiếng Anh)"
+
+msgid "Description (Vietnamese)"
+msgstr "Mô tả (Tiếng Việt)"
+
+msgid "Diverse menu"
+msgstr "Thực đơn đa dạng"
+
+msgid "Edit"
+msgstr "Sửa"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email Sent"
+msgstr "Email đã gửi"
+
+msgid "Enter Vietnamese text first. English fields are optional and used when the site language is EN."
+msgstr "Nhập nội dung tiếng Việt trước. Trường tiếng Anh là tùy chọn và sẽ hiển thị khi người dùng chọn EN."
+
+msgid "Enter your current password, then your new password twice to confirm."
+msgstr "Nhập mật khẩu hiện tại, sau đó nhập mật khẩu mới hai lần để xác nhận."
+
+msgid "Enter your email address and we'll send instructions to reset your password."
+msgstr "Nhập email của bạn, chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu."
+
+msgid "Excellent quality"
+msgstr "Chất lượng tuyệt vời"
+
+msgid "Experience traditional Vietnamese flavors with fresh ingredients and culinary passion."
+msgstr "Trải nghiệm hương vị truyền thống Việt Nam với nguyên liệu tươi ngon và đam mê ẩm thực"
+
+msgid "Export CSV"
+msgstr "Xuất CSV"
+
+msgid "Failed to add to cart."
+msgstr "Lỗi khi thêm vào giỏ hàng"
+
+msgid "Featured Dishes"
+msgstr "Món Ăn Nổi Bật"
+
+msgid "Fill in delivery details to complete your order."
+msgstr "Điền thông tin giao hàng để hoàn tất đơn hàng"
+
+msgid "First name"
+msgstr "Họ"
+
+msgid "Forgot your password?"
+msgstr "Quên mật khẩu?"
+
+msgid "Fulfillment method"
+msgstr "Hình thức nhận hàng"
+
+msgid "Full name"
+msgstr "Họ và tên"
+
+msgid "Get Directions"
+msgstr "Chỉ đường"
+
+msgid "Home"
+msgstr "Trang Chủ"
+
+msgid "Image (optional)"
+msgstr "Hình Ảnh (không bắt buộc)"
+
+msgid "In stock"
+msgstr "Còn Hàng"
+
+msgid "Invalid quantity."
+msgstr "Số lượng không hợp lệ."
+
+msgid "Item name"
+msgstr "Tên Món"
+
+msgid "Item name (English)"
+msgstr "Tên món (Tiếng Anh)"
+
+msgid "Item name (Vietnamese)"
+msgstr "Tên món (Tiếng Việt)"
+
+msgid "Item names stay in Vietnamese. Add an English description for EN mode, or leave blank to auto-translate."
+msgstr "Tên món luôn hiển thị bằng tiếng Việt. Thêm mô tả tiếng Anh cho chế độ EN, hoặc để trống để tự dịch."
+
+msgid "Items"
+msgstr "Món đã đặt"
+
+msgid "items in cart"
+msgstr "món trong giỏ hàng"
+
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+msgid "Last name"
+msgstr "Tên"
+
+msgid "Latest News & Promotions"
+msgstr "Tin Tức & Khuyến Mãi Mới Nhất"
+
+msgid "Latest updates from the restaurant."
+msgstr "Cập nhật tin tức mới nhất từ nhà hàng"
+
+msgid "Log In"
+msgstr "Đăng Nhập"
+
+msgid "Log Out"
+msgstr "Đăng Xuất"
+
+msgid "Manage in Orders"
+msgstr "Quản Lý Trong Đơn Hàng"
+
+msgid "Manage your account information."
+msgstr "Quản lý thông tin tài khoản của bạn."
+
+msgid "Manager confirmation code"
+msgstr "Mã xác nhận quản lý"
+
+msgid "Many reviews on Google"
+msgstr "Nhiều đánh giá trên Google"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Network connection error."
+msgstr "Lỗi kết nối mạng"
+
+msgid "New password"
+msgstr "Mật khẩu mới"
+
+msgid "New password confirmation"
+msgstr "Xác nhận mật khẩu mới"
+
+msgid "News"
+msgstr "Tin Tức"
+
+msgid "News & Promotions"
+msgstr "Tin Tức & Khuyến Mãi"
+
+msgid "No data for this time period."
+msgstr "Chưa có dữ liệu cho khoảng thời gian này."
+
+msgid "No items in this category yet."
+msgstr "Chưa có món ăn nào trong danh mục này."
+
+msgid "No news yet"
+msgstr "Chưa có tin tức"
+
+msgid "No orders for this time period."
+msgstr "Không có đơn hàng trong khoảng thời gian này."
+
+msgid "No orders found."
+msgstr "Không có đơn hàng nào."
+
+msgid "Notes"
+msgstr "Ghi chú"
+
+msgid "Online payment"
+msgstr "Thanh toán online"
+
+msgid "Open menu"
+msgstr "Mở menu"
+
+msgid "Optional notes"
+msgstr "Ghi chú (không bắt buộc)"
+
+msgid "Order"
+msgstr "Đơn"
+
+msgid "Order #%(number)s -> %(status)s"
+msgstr "Đơn #%(number)s -> %(status)s"
+
+msgid "Order #%(number)s cannot be advanced further."
+msgstr "Đơn #%(number)s không thể chuyển trạng thái tiếp."
+
+msgid "Order #%(number)s cannot be cancelled in its current status."
+msgstr "Đơn #%(number)s không thể hủy ở trạng thái hiện tại."
+
+msgid "Order #%(number)s has been cancelled."
+msgstr "Đơn #%(number)s đã bị hủy."
+
+msgid "Order #%(number)s has been received"
+msgstr "Đơn hàng #%(number)s đã được ghi nhận"
+
+msgid "Order Confirmation"
+msgstr "Xác Nhận Đơn Hàng"
+
+msgid "Order Details"
+msgstr "Chi Tiết Đơn Hàng"
+
+msgid "Order History"
+msgstr "Lịch Sử"
+
+msgid "Order Management"
+msgstr "Quản Lý Đơn Hàng"
+
+msgid "Order Now"
+msgstr "Đặt Món Ngay"
+
+msgid "Order time"
+msgstr "Thời gian đặt hàng"
+
+msgid "Order-by-order breakdown for the selected period."
+msgstr "Danh sách từng đơn hàng trong khoảng thời gian đã chọn."
+
+msgid "Orders"
+msgstr "Đơn Hàng"
+
+msgid "Orders by Status"
+msgstr "Đơn Hàng Theo Trạng Thái"
+
+msgid "Out of stock"
+msgstr "Hết Hàng"
+
+msgid "Password"
+msgstr "Mật khẩu"
+
+msgid "Password change"
+msgstr "Đổi mật khẩu"
+
+msgid "Password Change Successful"
+msgstr "Đổi mật khẩu thành công"
+
+msgid "Password change successful"
+msgstr "Đổi mật khẩu thành công"
+
+msgid "Password confirmation"
+msgstr "Xác nhận mật khẩu"
+
+msgid "Password reset complete"
+msgstr "Đặt lại mật khẩu thành công"
+
+msgid "Payment"
+msgstr "Thanh toán"
+
+msgid "Pending"
+msgstr "Chờ xử lý"
+
+msgid "Phone"
+msgstr "Điện thoại"
+
+msgid "Phone number"
+msgstr "Số điện thoại"
+
+msgid "Phone number is required."
+msgstr "Vui lòng nhập số điện thoại."
+
+msgid "Pickup"
+msgstr "Tự đến lấy"
+
+msgid "Placed on"
+msgstr "Đặt lúc"
+
+msgid "Please enter a delivery address."
+msgstr "Vui lòng nhập địa chỉ giao hàng."
+
+msgid "Preparing"
+msgstr "Đang chuẩn bị"
+
+msgid "Price (₫)"
+msgstr "Giá (₫)"
+
+msgid "Proceed to Checkout"
+msgstr "Tiến Hành Thanh Toán"
+
+msgid "Profile"
+msgstr "Hồ Sơ"
+
+msgid "Profile updated successfully."
+msgstr "Cập nhật hồ sơ thành công."
+
+msgid "Publish"
+msgstr "Đăng Tin"
+
+msgid "Quantity"
+msgstr "Số lượng"
+
+msgid "Read More"
+msgstr "Đọc Thêm"
+
+msgid "Recipient"
+msgstr "Người nhận"
+
+msgid "Related News"
+msgstr "Tin Liên Quan"
+
+msgid "Remove from cart"
+msgstr "Xóa Khỏi Giỏ"
+
+msgid "Reports"
+msgstr "Báo Cáo"
+
+msgid "Required unless you are a senior manager (superuser)."
+msgstr "Chỉ cần nhập nếu bạn không phải quản lý cấp cao (superuser)."
+
+msgid "Restaurant location on Google Maps"
+msgstr "Vị trí nhà hàng trên Google Maps"
+
+msgid "Revenue"
+msgstr "Doanh Thu"
+
+msgid "Review your items before checkout."
+msgstr "Xem lại món ăn trước khi tiến hành đặt hàng"
+
+msgid "Reward points"
+msgstr "Điểm thưởng"
+
+msgid "Sales Details"
+msgstr "Chi Tiết Doanh Thu"
+
+msgid "Save Changes"
+msgstr "Lưu Thay Đổi"
+
+msgid "See reviews from real customers on Google Maps."
+msgstr "Xem các đánh giá từ khách hàng thực tế trên Google Maps"
+
+msgid "Send reset instructions"
+msgstr "Gửi hướng dẫn đặt lại"
+
+msgid "serving"
+msgstr "phần"
+
+msgid "Set a new password"
+msgstr "Đặt mật khẩu mới"
+
+msgid "Set new password"
+msgstr "Đặt mật khẩu mới"
+
+msgid "Sign Up"
+msgstr "Đăng Ký"
+
+msgid "Sign Up Now"
+msgstr "Đăng Ký Ngay"
+
+msgid "Some items are no longer available: %(names)s. Please update your cart."
+msgstr "Một số món không còn khả dụng: %(names)s. Vui lòng cập nhật giỏ hàng."
+
+msgid "Status"
+msgstr "Trạng thái"
+
+msgid "Tap to view all orders"
+msgstr "Nhấn để xem tất cả đơn hàng"
+
+msgid "Thank You!"
+msgstr "Cảm Ơn Bạn!"
+
+msgid "The hot pot broth is sweet, sour, and light — very enjoyable. The beef is tender and fresh, vegetables are clean. The restaurant is not too crowded, atmosphere is comfortable, staff are enthusiastic. I will come back to support."
+msgstr "Nước lẩu của quán ngọt ngọt, chua chua, thanh thanh dùng rất vừa miệng, thịt bò mềm và tươi, rau sạch. Quán không quá đông, không khí thoải mái, nhân viên nhiệt tình. Mình sẽ quay lại ủng hộ"
+
+msgid "This is the only vinegar hot pot in Can Tho that truly matches my taste. The flavor is balanced, not overly sour. Meat and vegetables are fresh. Always supporting!"
+msgstr "Bò nhúng giấm ở Cần Thơ chỉ có chỗ này đúng gu mình nhất. Vị thanh vừa, hông bị chua giấm. Thịt và rau đều tươi. Mãi ủng hộ"
+
+msgid "This Month"
+msgstr "Tháng Này"
+
+msgid "This Week"
+msgstr "Tuần Này"
+
+msgid "This Year"
+msgstr "Năm Nay"
+
+msgid "Title"
+msgstr "Tiêu Đề"
+
+msgid "Title (English)"
+msgstr "Tiêu đề (Tiếng Anh)"
+
+msgid "Title (Vietnamese)"
+msgstr "Tiêu đề (Tiếng Việt)"
+
+msgid "Titles stay in Vietnamese. Add English content for EN mode, or leave blank to auto-translate."
+msgstr "Tiêu đề luôn hiển thị bằng tiếng Việt. Thêm nội dung tiếng Anh cho chế độ EN, hoặc để trống để tự dịch."
+
+msgid "Today"
+msgstr "Hôm Nay"
+
+msgid "Top Selling Items"
+msgstr "Món Bán Chạy Nhất"
+
+msgid "Total"
+msgstr "Tổng Cộng"
+
+msgid "total"
+msgstr "tổng cộng"
+
+msgid "Total Orders"
+msgstr "Tổng Đơn Hàng"
+
+msgid "Total Sales"
+msgstr "Tổng Doanh Thu"
+
+msgid "Track orders and earn reward points on future visits!"
+msgstr "Theo dõi đơn hàng và tích điểm thưởng cho những lần đặt sau!"
+
+msgid "Traditional Vietnamese Cuisine"
+msgstr "Món Ăn Truyền Thống Việt Nam"
+
+msgid "Update"
+msgstr "Cập Nhật"
+
+msgid "Username"
+msgstr "Tên đăng nhập"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Video (optional)"
+msgstr "Video (không bắt buộc)"
+
+msgid "View All News"
+msgstr "Xem Tất Cả Tin Tức"
+
+msgid "View All Reviews"
+msgstr "Xem Tất Cả Đánh Giá"
+
+msgid "View Details"
+msgstr "Xem Chi Tiết"
+
+msgid "View Full Menu"
+msgstr "Xem Toàn Bộ Thực Đơn"
+
+msgid "View Menu"
+msgstr "Xem Thực Đơn"
+
+msgid "View Sales Details"
+msgstr "Xem Chi Tiết Doanh Thu"
+
+msgid "View your past orders and their status."
+msgstr "Xem các đơn hàng trước đây và trạng thái của chúng."
+
+msgid "Watch Video"
+msgstr "Xem Video"
+
+msgid "We've emailed you instructions for resetting your password. You should receive it shortly!"
+msgstr "Chúng tôi đã gửi email hướng dẫn đặt lại mật khẩu. Bạn sẽ nhận được trong giây lát!"
+
+msgid "Welcome to Bò Nhúng Giấm Ngày Xưa!"
+msgstr "Chào Mừng Đến Với Bò Nhúng Giấm Ngày Xưa!"
+
+msgid "Write a Review"
+msgstr "Viết Đánh Giá"
+
+msgid "You have no orders yet."
+msgstr "Bạn chưa có đơn hàng nào."
+
+msgid "Your browser does not support the video tag."
+msgstr "Trình duyệt của bạn không hỗ trợ thẻ video."
+
+msgid "Your cart is empty."
+msgstr "Giỏ hàng của bạn đang trống."
+
+msgid "Your new password has been set."
+msgstr "Mật khẩu mới của bạn đã được thiết lập."
+
+msgid "Your Order"
+msgstr "Đơn Hàng Của Bạn"
+
+msgid "Your password was changed."
+msgstr "Mật khẩu của bạn đã được thay đổi."
+

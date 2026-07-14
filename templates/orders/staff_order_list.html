@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
 
-{% block title %}Quản Lý Đơn Hàng - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "Order Management" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/menu.css' %}">
@@ -10,12 +11,12 @@
 
 {% block content %}
 <div class="page-header">
-    <h1>Quản Lý Đơn Hàng</h1>
+    <h1>{% trans "Order Management" %}</h1>
 </div>
 
 <div class="category-filter">
     <a href="{% url 'staff_order_list' %}" class="category-btn {% if not selected_status %}active{% endif %}">
-        Tất Cả
+        {% trans "All" %}
     </a>
     {% for value, label in status_choices %}
         <a href="{% url 'staff_order_list' %}?status={{ value }}"
@@ -29,17 +30,17 @@
 <div class="grid grid-lg">
     {% for order in orders %}
     <div class="item-card">
-        <h3>Đơn #{{ order.order_number }}</h3>
+        <h3>{% trans "Order" %} #{{ order.order_number }}</h3>
         <p>{{ order.customer_name }} — {{ order.customer_phone }}</p>
         <p>
             {{ order.get_fulfillment_type_display }}
             {% if order.fulfillment_type == 'delivery' %}: {{ order.delivery_address }}{% endif %}
         </p>
-        <p>Đặt lúc: {{ order.created_at|date:"d/m/Y H:i" }}</p>
-        <p>Trạng thái: <strong>{{ order.get_status_display }}</strong></p>
+        <p>{% trans "Placed on" %}: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+        <p>{% trans "Status" %}: <strong>{{ order.get_status_display }}</strong></p>
         {% if order.status == 'cancelled' %}
-        <p>Lý do hủy: {{ order.cancellation_reason }}</p>
-        <p>Hủy lúc: {{ order.cancelled_at|date:"d/m/Y H:i" }} — bởi {{ order.cancelled_by }}</p>
+        <p>{% trans "Cancellation reason" %}: {{ order.cancellation_reason }}</p>
+        <p>{% trans "Cancelled at" %}: {{ order.cancelled_at|date:"d/m/Y H:i" }} — {% trans "by" %} {{ order.cancelled_by }}</p>
         {% endif %}
 
         <ul>
@@ -50,25 +51,27 @@
 
         <p class="price">{{ order.total_price|vnd_format }} ₫</p>
 
-        {% if order.get_next_status %}
-        <form method="post" action="{% url 'advance_order_status' order.order_number %}">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.get_full_path }}">
-            <button type="submit" class="view-reviews-btn">
-                Chuyển Sang: {{ order.get_next_status_label }}
-            </button>
-        </form>
-        {% endif %}
+        <div class="item-card-footer">
+            {% if order.get_next_status %}
+            <form method="post" action="{% url 'advance_order_status' order.order_number %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="view-reviews-btn">
+                    {% trans "Advance to" %}: {{ order.get_next_status_label }}
+                </button>
+            </form>
+            {% endif %}
 
-        {% if order.status != 'delivered' and order.status != 'cancelled' %}
-        <a href="{% url 'cancel_order_status' order.order_number %}" class="admin-btn">Hủy Đơn</a>
-        {% endif %}
+            {% if order.status != 'delivered' and order.status != 'cancelled' %}
+            <a href="{% url 'cancel_order_status' order.order_number %}" class="admin-btn">{% trans "Cancel Order" %}</a>
+            {% endif %}
+        </div>
     </div>
     {% endfor %}
 </div>
 {% else %}
 <div class="empty-state">
-    <p>Không có đơn hàng nào.</p>
+    <p>{% trans "No orders found." %}</p>
 </div>
 {% endif %}
 {% endblock %}

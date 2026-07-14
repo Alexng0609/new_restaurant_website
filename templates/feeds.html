@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Tin Tức - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "News" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block content %}
 <div class="page-header">
-    <h1>📰 Tin Tức & Khuyến Mãi</h1>
-    <p>Cập nhật tin tức mới nhất từ nhà hàng</p>
+    <h1>📰 {% trans "News & Promotions" %}</h1>
+    <p>{% trans "Latest updates from the restaurant." %}</p>
 </div>
 
 {% if staff_role == 'manager' or staff_role == 'admin' %}
 <div class="admin-add-button">
     <a href="{% url 'feed_add' %}" class="view-reviews-btn">
-        <i class="fas fa-plus-circle"></i> Thêm Tin Tức Mới
+        <i class="fas fa-plus-circle"></i> {% trans "Add News Post" %}
     </a>
 </div>
 {% endif %}
@@ -24,7 +25,7 @@
             {% if staff_role == 'manager' or staff_role == 'admin' %}
             <div class="admin-controls">
                 <a href="/admin/restaurant/newsfeed/{{ news.id }}/change/" class="admin-btn">
-                    <i class="fas fa-edit"></i> Sửa
+                    <i class="fas fa-edit"></i> {% trans "Edit" %}
                 </a>
             </div>
             {% endif %}
@@ -33,21 +34,20 @@
                 <div class="news-card-media">
                     {% include "news_media.html" with news=news %}
                 </div>
-
                 <div class="news-card-content">
                     <div class="news-date">
                         📅 {{ news.created_at|date:"d/m/Y" }}
                     </div>
-                    <h2 class="news-title">{{ news.title }}</h2>
-                    <p class="news-text">{{ news.content|truncatewords:30 }}</p>
+                    <h2 class="news-title">{{ news.get_localized_title }}</h2>
+                    <p class="news-text">{{ news.get_localized_content|truncatewords:30 }}</p>
                 </div>
             </a>
         </div>
         {% endfor %}
     {% else %}
         <div class="empty-state">
-            <h2>Chưa có tin tức</h2>
-            <p>Hãy quay lại sau để xem tin tức mới nhất!</p>
+            <h2>{% trans "No news yet" %}</h2>
+            <p>{% trans "Check back later for the latest updates!" %}</p>
         </div>
     {% endif %}
 </div>

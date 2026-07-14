@@ -1,12 +1,36 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Sign Up{% endblock title %}
+{% block title %}{% trans "Sign Up" %} - Bò Nhúng Giấm Ngày Xưa{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
 {% block content %}
-<h2>Sign Up</h2>
-<form method="post">{% csrf_token %}
-    {{ form|crispy }}
-    <button class="view-reviews-btn" type="submit">Sign Up</button>
-</form>
+<div class="page-header">
+    <h1>{% trans "Sign Up" %}</h1>
+    <p>{% trans "Create an account to track orders and earn reward points." %}</p>
+</div>
+
+<div class="detail-panel form-card">
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="form-errors">{{ field.errors }}</div>{% endif %}
+            {% if field.help_text %}<p class="form-help">{{ field.help_text }}</p>{% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button class="add-btn" type="submit">{% trans "Sign Up" %}</button>
+            <a href="{% url 'login' %}" class="view-reviews-btn">{% trans "Already have an account?" %}</a>
+        </div>
+    </form>
+</div>
 {% endblock content %}

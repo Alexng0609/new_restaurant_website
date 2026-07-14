@@ -1,35 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
 
-{% block title %}Thực Đơn - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "Menu" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/menu.css' %}">
 {% endblock %}
 
 {% block content %}
-
 <div class="page-header">
-    <h1>🍽️ Thực Đơn</h1>
+    <h1>🍽️ {% trans "Menu" %}</h1>
 </div>
 
 {% if staff_role == 'manager' or staff_role == 'admin' %}
 <div class="admin-add-button">
     <a href="{% url 'menu_item_add' %}" class="view-reviews-btn">
-        <i class="fas fa-plus-circle"></i> Thêm Món Ăn
+        <i class="fas fa-plus-circle"></i> {% trans "Add Menu Item" %}
     </a>
 </div>
 {% endif %}
 
 <div class="category-filter">
     <a href="{% url 'menu' %}" class="category-btn {% if not selected_category %}active{% endif %}">
-        Tất Cả
+        {% trans "All" %}
     </a>
     {% for category in categories %}
         <a href="{% url 'menu' %}?category={{ category.id }}"
            class="category-btn {% if selected_category == category.id|stringformat:'s' %}active{% endif %}">
-            {{ category.name }}
+            {{ category.get_localized_name }}
         </a>
     {% endfor %}
 </div>
@@ -37,14 +37,11 @@
 {% if menu_items %}
 <div class="grid grid-lg">
     {% for item in menu_items %}
-
     <div class="card news-card">
-
         {% if staff_role == 'manager' or staff_role == 'admin' %}
         <div class="admin-controls">
-            <a href="/admin/restaurant/menuitem/{{ item.id }}/change/"
-               class="admin-btn">
-                ✏️ Sửa
+            <a href="/admin/restaurant/menuitem/{{ item.id }}/change/" class="admin-btn">
+                ✏️ {% trans "Edit" %}
             </a>
         </div>
         {% endif %}
@@ -52,46 +49,40 @@
         <a href="{% url 'menu_item_detail' item.id %}">
             <div class="news-card-media">
                 {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                    <img src="{{ item.image.url }}" alt="{{ item.get_localized_name }}">
                 {% else %}
                     <div class="no-media-icon">🍜</div>
                 {% endif %}
             </div>
-
             <div class="corner-badge category-tag-overlay">
-                {{ item.category.name }}
+                {{ item.category.get_localized_name }}
             </div>
         </a>
 
         <div class="news-card-content">
             <a href="{% url 'menu_item_detail' item.id %}" style="text-decoration: none;">
-                <h2 class="news-title">{{ item.name }}</h2>
-                <p class="news-text">{{ item.description }}</p>
+                <h2 class="news-title">{{ item.get_localized_name }}</h2>
+                <p class="news-text">{{ item.get_localized_description }}</p>
             </a>
 
             <div class="price-tag">{{ item.price|vnd_format }} ₫</div>
 
-            <!-- Add to cart form -->
-            <form class="add-btn-form add-to-cart-form" method="post" action="{% url 'add_to_cart' item.id %}" data-item-name="{{ item.name }}">
+            <form class="add-btn-form add-to-cart-form" method="post" action="{% url 'add_to_cart' item.id %}" data-item-name="{{ item.get_localized_name }}">
                 {% csrf_token %}
                 <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="add-btn" {% if not item.is_available %}disabled{% endif %}>
-                    ➕ Thêm vào giỏ
+                <button type="submit" class="add-btn" data-loading-text="{% trans 'Adding...' %}" {% if not item.is_available %}disabled{% endif %}>
+                    ➕ {% trans "Add to cart" %}
                 </button>
             </form>
         </div>
-
     </div>
-
     {% endfor %}
 </div>
 {% else %}
 <div class="empty-state">
-    <p>Chưa có món ăn nào trong danh mục này.</p>
+    <p>{% trans "No items in this category yet." %}</p>
 </div>
 {% endif %}
 
-<!-- Toast container for add-to-cart feedback -->
 <div id="toast-container"></div>
-
 {% endblock %}

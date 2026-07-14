@@ -8,6 +8,7 @@ automatically, with no manual "add to group" step required.
 """
 
 from django.contrib.auth.models import Group
+from django.contrib.auth.signals import user_logged_in
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -31,3 +32,13 @@ def sync_manager_group(sender, instance, **kwargs):
     should_be_staff = instance.role in (CustomUser.ROLE_STAFF, CustomUser.ROLE_MANAGER)
     if instance.is_staff != should_be_staff:
         CustomUser.objects.filter(pk=instance.pk).update(is_staff=should_be_staff)
+
+
+@receiver(user_logged_in)
+def on_user_logged_in(sender, request, user, **kwargs):
+    from orders.models import Order
+    from orders.utils import merge_guest_cart_into_user
+
+    session_key = request.session.session_key
+    merge_guest_cart_into_user(user, session_key)
+    Order.link_orders_to_user(user)

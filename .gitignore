@@ -1,4 +1,17 @@
 .venv/
 __pycache__/
+*.py[cod]
+*.sqlite3
 db.sqlite3
 .env
+media/
+staticfiles/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

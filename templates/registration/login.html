@@ -1,13 +1,36 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Log In{% endblock title %}
+{% block title %}{% trans "Log In" %} - Bò Nhúng Giấm Ngày Xưa{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
 {% block content %}
-<h2>Log In</h2>
-<form method="post">{% csrf_token %}
-    {{ form|crispy }}
-    <button class="view-reviews-btn" type="submit">Log In</button>
-</form>
-<p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+<div class="page-header">
+    <h1>{% trans "Log In" %}</h1>
+</div>
+
+<div class="detail-panel form-card">
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="form-errors">{{ field.errors }}</div>{% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button class="add-btn" type="submit">{% trans "Log In" %}</button>
+            <a href="{% url 'signup' %}" class="view-reviews-btn">{% trans "Sign Up" %}</a>
+        </div>
+    </form>
+
+    <p class="form-footer-link"><a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a></p>
+</div>
 {% endblock content %}

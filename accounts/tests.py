@@ -48,11 +48,13 @@ class SignupPageTests(TestCase):  # new
             {
                 "username": "testuser",
                 "email": "testuser@email.com",
+                "phone_number": "0701234567",
                 "password1": "testpass123",
                 "password2": "testpass123",
             },
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(get_user_model().objects.all().count(), 1)
-        self.assertEqual(get_user_model().objects.all()[0].username, "testuser")
-        self.assertEqual(get_user_model().objects.all()[0].email, "testuser@email.com")
+        user = get_user_model().objects.get(username="testuser")
+        self.assertEqual(user.email, "testuser@email.com")
+        self.assertEqual(user.phone_number, "0701234567")

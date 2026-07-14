@@ -98,6 +98,11 @@ class MenuItemDetailView(DetailView):
     context_object_name = "item"
     pk_url_kwarg = "item_id"
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(
+            MenuItem, id=self.kwargs["item_id"], is_available=True
+        )
+
 
 class MenuItemAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     """Create a new menu item — replaces the old /admin/.../add/ link

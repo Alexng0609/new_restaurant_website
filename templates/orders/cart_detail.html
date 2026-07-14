@@ -1,47 +1,48 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
 
-{% block title %}Giỏ Hàng - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "Cart" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block content %}
 <div class="page-header">
-    <h1>Giỏ Hàng</h1>
-    <p>Xem lại món ăn trước khi tiến hành đặt hàng</p>
+    <h1>{% trans "Cart" %}</h1>
+    <p>{% trans "Review your items before checkout." %}</p>
 </div>
 
 {% if cart.items.all %}
     <div class="grid grid-lg">
         {% for cart_item in cart.items.all %}
         <div class="item-card">
-            <h3>{{ cart_item.menu_item.name }}</h3>
-            <p>{{ cart_item.menu_item.price|vnd_format }} ₫ / phần</p>
+            <h3>{{ cart_item.menu_item.get_localized_name }}</h3>
+            <p>{{ cart_item.menu_item.price|vnd_format }} ₫ / {% trans "serving" %}</p>
             <p class="price">{{ cart_item.subtotal|vnd_format }} ₫</p>
 
             <form method="post" action="{% url 'update_cart_item' cart_item.id %}">
                 {% csrf_token %}
                 <input type="number" name="quantity" value="{{ cart_item.quantity }}" min="1">
-                <button type="submit" class="view-reviews-btn">Cập Nhật</button>
+                <button type="submit" class="view-reviews-btn">{% trans "Update" %}</button>
             </form>
 
             <form method="post" action="{% url 'remove_from_cart' cart_item.id %}">
                 {% csrf_token %}
-                <button type="submit" class="admin-btn">Xóa Khỏi Giỏ</button>
+                <button type="submit" class="admin-btn">{% trans "Remove from cart" %}</button>
             </form>
         </div>
         {% endfor %}
     </div>
 
     <div class="cta-section">
-        <h2>Tổng Cộng: {{ cart.total_price|vnd_format }} ₫</h2>
-        <p>{{ cart.total_items }} món trong giỏ hàng</p>
-        <a href="{% url 'checkout' %}" class="view-reviews-btn">Tiến Hành Thanh Toán</a>
+        <h2>{% trans "Total" %}: {{ cart.total_price|vnd_format }} ₫</h2>
+        <p>{{ cart.total_items }} {% trans "items in cart" %}</p>
+        <a href="{% url 'checkout' %}" class="view-reviews-btn">{% trans "Proceed to Checkout" %}</a>
     </div>
 {% else %}
     <div class="empty-state">
         <i class="fas fa-cart-shopping no-media-icon"></i>
-        <p>Giỏ hàng của bạn đang trống.</p>
-        <a href="{% url 'menu' %}" class="view-reviews-btn">Xem Thực Đơn</a>
+        <p>{% trans "Your cart is empty." %}</p>
+        <a href="{% url 'menu' %}" class="view-reviews-btn">{% trans "View Menu" %}</a>
     </div>
 {% endif %}
 {% endblock %}

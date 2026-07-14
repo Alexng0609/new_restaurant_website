@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Cart(models.Model):
@@ -27,6 +28,13 @@ class Cart(models.Model):
 
     class Meta:
         ordering = ["-updated_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user"],
+                condition=models.Q(user__isnull=False),
+                name="unique_user_cart",
+            )
+        ]
 
     def __str__(self):
         owner = self.user.email if self.user else f"guest:{self.session_key}"
@@ -41,7 +49,11 @@ class Cart(models.Model):
         return sum((item.subtotal for item in self.items.all()), Decimal("0"))
 
     def merge_guest_cart_into(self, user):
-        """Reassign a guest cart to a newly-registered/logged-in user."""
+        """Reassign a guest cart to a newly-registered/logged-in user.
+
+        Prefer merge_guest_cart_into_user() in orders.utils, which merges
+        line items when the user already has a cart.
+        """
         self.user = user
         self.session_key = None
         self.save(update_fields=["user", "session_key"])
@@ -81,25 +93,25 @@ class Order(models.Model):
     STATUS_DELIVERED = "delivered"
     STATUS_CANCELLED = "cancelled"
     STATUS_CHOICES = [
-        (STATUS_PENDING, "Pending"),
-        (STATUS_CONFIRMED, "Confirmed"),
-        (STATUS_PREPARING, "Preparing"),
-        (STATUS_DELIVERED, "Delivered"),
-        (STATUS_CANCELLED, "Cancelled"),
+        (STATUS_PENDING, _("Pending")),
+        (STATUS_CONFIRMED, _("Confirmed")),
+        (STATUS_PREPARING, _("Preparing")),
+        (STATUS_DELIVERED, _("Delivered")),
+        (STATUS_CANCELLED, _("Cancelled")),
     ]
 
     FULFILLMENT_PICKUP = "pickup"
     FULFILLMENT_DELIVERY = "delivery"
     FULFILLMENT_CHOICES = [
-        (FULFILLMENT_PICKUP, "Tự đến lấy"),
-        (FULFILLMENT_DELIVERY, "Giao hàng"),
+        (FULFILLMENT_PICKUP, _("Pickup")),
+        (FULFILLMENT_DELIVERY, _("Delivery")),
     ]
 
     PAYMENT_COD = "cash_on_delivery"
     PAYMENT_ONLINE = "online_payment"
     PAYMENT_CHOICES = [
-        (PAYMENT_COD, "Thanh toán khi nhận hàng"),
-        (PAYMENT_ONLINE, "Thanh toán online"),
+        (PAYMENT_COD, _("Cash on delivery")),
+        (PAYMENT_ONLINE, _("Online payment")),
     ]
 
     order_number = models.CharField(

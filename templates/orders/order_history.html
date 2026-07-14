@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load custom_filters %}
+
+{% block title %}{% trans "Order History" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{% trans "Order History" %}</h1>
+    <p>{% trans "View your past orders and their status." %}</p>
+</div>
+
+{% if orders %}
+<div class="grid grid-lg">
+    {% for order in orders %}
+    <div class="item-card">
+        <h3>{% trans "Order" %} #{{ order.order_number }}</h3>
+        <p>{% trans "Placed on" %}: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+        <p>{% trans "Status" %}: <strong>{{ order.get_status_display }}</strong></p>
+        <p>
+            {{ order.get_fulfillment_type_display }}
+            {% if order.fulfillment_type == 'delivery' %} — {{ order.delivery_address }}{% endif %}
+        </p>
+
+        <ul>
+            {% for order_item in order.items.all %}
+            <li>{{ order_item.quantity }} x {{ order_item.item_name }}</li>
+            {% endfor %}
+        </ul>
+
+        <p class="price">{{ order.total_price|vnd_format }} ₫</p>
+
+        <a href="{% url 'order_confirmation' order.order_number %}" class="view-reviews-btn">
+            {% trans "View Details" %}
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>{% trans "You have no orders yet." %}</p>
+    <a href="{% url 'menu' %}" class="view-reviews-btn">{% trans "Browse Menu" %}</a>
+</div>
+{% endif %}
+{% endblock %}

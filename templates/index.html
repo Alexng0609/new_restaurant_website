@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
 
-{% block title %}Trang Chủ - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "Home" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
@@ -12,22 +13,22 @@
 <div class="hero">
     <div class="hero-content">
         <img src="{% static 'images/logonew.jpg' %}" alt="Logo" class="hero-logo">
-        <h1>Chào Mừng Đến Với Bò Nhúng Giấm Ngày Xưa!</h1>
-        <p>Trải nghiệm hương vị truyền thống Việt Nam với nguyên liệu tươi ngon và đam mê ẩm thực</p>
+        <h1>{% trans "Welcome to Bò Nhúng Giấm Ngày Xưa!" %}</h1>
+        <p>{% trans "Experience traditional Vietnamese flavors with fresh ingredients and culinary passion." %}</p>
         <div class="hero-buttons">
             {% if user.is_authenticated %}
                 <a href="{% url 'menu' %}" class="hero-btn">
-                    <i class="fas fa-utensils"></i> Xem Thực Đơn
+                    <i class="fas fa-utensils"></i> {% trans "View Menu" %}
                 </a>
-                <a href="#" class="hero-btn">
-                    <i class="fas fa-shopping-cart"></i> Đặt Món Ngay
+                <a href="{% url 'cart_detail' %}" class="hero-btn">
+                    <i class="fas fa-shopping-cart"></i> {% trans "Order Now" %}
                 </a>
             {% else %}
                 <a href="{% url 'signup' %}" class="hero-btn">
-                    <i class="fas fa-user-plus"></i> Đăng Ký Ngay
+                    <i class="fas fa-user-plus"></i> {% trans "Sign Up Now" %}
                 </a>
                 <a href="{% url 'menu' %}" class="hero-btn">
-                    <i class="fas fa-utensils"></i> Xem Thực Đơn
+                    <i class="fas fa-utensils"></i> {% trans "View Menu" %}
                 </a>
             {% endif %}
         </div>
@@ -36,15 +37,16 @@
 
 {% if latest_news %}
 <section>
-    <h2 class="section-title">📰 Tin Tức & Khuyến Mãi Mới Nhất</h2>
+    <h2 class="section-title">📰 {% trans "Latest News & Promotions" %}</h2>
     <div class="grid">
         {% for news in latest_news %}
         <a href="{% url 'feed_detail' news.id %}" class="card news-card news-card-compact">
+            <div class="news-card-media">
                 {% include "news_media.html" with news=news %}
             </div>
             <div class="news-card-content">
-                <h3>{{ news.title }}</h3>
-                <p>{{ news.content|truncatewords:30 }}</p>
+                <h3>{{ news.get_localized_title }}</h3>
+                <p>{{ news.get_localized_content|truncatewords:30 }}</p>
                 <small>
                     <i class="fas fa-calendar"></i>
                     {{ news.created_at|date:"d/m/Y" }}
@@ -54,52 +56,67 @@
         {% endfor %}
     </div>
     <div class="section-cta">
-        <a href="{% url 'feeds' %}" class="view-reviews-btn">Xem Tất Cả Tin Tức</a>
+        <a href="{% url 'feeds' %}" class="view-reviews-btn">{% trans "View All News" %}</a>
     </div>
 </section>
 {% endif %}
 
 {% if featured_items %}
 <section>
-    <h2 class="section-title">⭐ Món Ăn Nổi Bật</h2>
+    <h2 class="section-title">⭐ {% trans "Featured Dishes" %}</h2>
     <div class="grid">
         {% for item in featured_items %}
         <div class="card item-card">
-            <h3>{{ item.name }}</h3>
-            <p>{{ item.description|truncatewords:15 }}</p>
-            <div class="price">{{ item.price|vnd_format }} <span class="currency">₫</span></div>
+            <a href="{% url 'menu_item_detail' item.id %}" class="item-card-link">
+                <h3>{{ item.get_localized_name }}</h3>
+                <p>{{ item.get_localized_description|truncatewords:15 }}</p>
+                <div class="price">{{ item.price|vnd_format }} <span class="currency">₫</span></div>
+            </a>
         </div>
         {% endfor %}
     </div>
     <div class="section-cta">
-        <a href="{% url 'menu' %}" class="view-reviews-btn">Xem Toàn Bộ Thực Đơn</a>
+        <a href="{% url 'menu' %}" class="view-reviews-btn">{% trans "View Full Menu" %}</a>
     </div>
 </section>
 {% endif %}
 
-<!-- Google Reviews Section -->
 <section class="reviews-section">
     <div class="container">
-        <h2 class="section-title">⭐ Đánh Giá Từ Khách Hàng</h2>
+        <h2 class="section-title">⭐ {% trans "Customer Reviews" %}</h2>
         <p class="reviews-intro">
-            Xem các đánh giá từ khách hàng thực tế trên Google Maps
+            {% trans "See reviews from real customers on Google Maps." %}
         </p>
 
         <div class="google-maps-container">
-            <!-- Google Maps Embed -->
-            <div class="map-wrapper">
-                <iframe
-                    src="https://www.google.com/maps?q=B%C3%B2+Nh%C3%BAng+Gi%E1%BA%A5m+-+Ng%C3%A0y+X%C6%B0a,+C%E1%BA%A7n+Th%C6%A1&output=embed"
-                    width="100%"
-                    height="450"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+            <div class="map-column">
+                <div class="map-wrapper">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.934525886847!2d105.751279!3d10.0209086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0890057173d5d%3A0xacf5028e89f13e4!2zQsOyIE5ow7puZyBHaeG6pW0gLSBOZ8OgeSBYxrBh!5e0!3m2!1svi!2svn!4v1710336000!5m2!1svi!2svn"
+                        width="100%"
+                        height="100%"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="{% trans 'Restaurant location on Google Maps' %}">
+                    </iframe>
+                </div>
+
+                <p class="map-address">
+                    <i class="fas fa-map-marker-alt"></i>
+                    238 Nguyễn Hiền, KDC 91B, Tân An, Cần Thơ
+                </p>
+
+                <a href="https://www.google.com/maps/dir/?api=1&destination=10.0209086,105.7538539&travelmode=driving"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="view-reviews-btn map-directions-btn">
+                    <i class="fas fa-directions"></i>
+                    {% trans "Get Directions" %}
+                </a>
             </div>
 
-            <!-- Review Summary Card -->
-            <div class="review-summary">
+            <div class="review-summary review-summary-sidebar">
                 <div class="rating-overview">
                     <div class="rating-score">
                         <span class="score">4.8</span>
@@ -110,26 +127,26 @@
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star-half-alt"></i>
                         </div>
-                        <p class="review-count">Nhiều đánh giá trên Google</p>
+                        <p class="review-count">{% trans "Many reviews on Google" %}</p>
                     </div>
                 </div>
 
                 <div class="review-highlights">
                     <div class="highlight-item">
                         <i class="fas fa-utensils"></i>
-                        <span>Thực đơn đa dạng</span>
+                        <span>{% trans "Diverse menu" %}</span>
                     </div>
                     <div class="highlight-item">
                         <i class="fas fa-thumbs-up"></i>
-                        <span>Chất lượng tuyệt vời</span>
+                        <span>{% trans "Excellent quality" %}</span>
                     </div>
                     <div class="highlight-item">
                         <i class="fas fa-smile"></i>
-                        <span>Phục vụ tận tình</span>
+                        <span>{% trans "Attentive service" %}</span>
                     </div>
                     <div class="highlight-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>Vị trí thuận tiện</span>
+                        <span>{% trans "Convenient location" %}</span>
                     </div>
                 </div>
 
@@ -138,7 +155,7 @@
                    rel="noopener noreferrer"
                    class="view-reviews-btn">
                     <i class="fab fa-google"></i>
-                    Xem Tất Cả Đánh Giá
+                    {% trans "View All Reviews" %}
                 </a>
 
                 <a href="https://www.google.com/maps/place/B%C3%B2+Nh%C3%BAng+Gi%E1%BA%A5m+-+Ng%C3%A0y+X%C6%B0a/@10.0209086,105.7538539,17z/data=!4m6!3m5!1s0x31a0890057173d5d:0xacf5028e89f13e4!8m2!3d10.0209086!4d105.7538539!16s%2Fg%2F11m5xwxfnb?entry=ttu&g_ep=EgoyMDI2MDYyOS4wIKXMDSoASAFQAw%3D%3D"
@@ -146,12 +163,11 @@
                    rel="noopener noreferrer"
                    class="write-review-btn">
                     <i class="fas fa-edit"></i>
-                    Viết Đánh Giá
+                    {% trans "Write a Review" %}
                 </a>
             </div>
         </div>
 
-        <!-- Sample Reviews -->
         <div class="grid sample-reviews">
             <div class="card review-card">
                 <div class="review-header">
@@ -161,7 +177,7 @@
                         </div>
                         <div>
                             <h4>Tieu Nghi Le</h4>
-                            <div class="review-stars">
+                            <div class="stars stars-sm">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -171,7 +187,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="review-text">"Nước lẩu của quán ngọt ngọt, chua chua, thanh thanh dùng rất vừa miệng, thịt bò mềm và tươi, rau sạch. Quán không quá đông, không khí thoải mái, nhân viên nhiệt tình. Mình sẽ quay lại ủng hộ"</p>
+                <p class="review-text">"{% trans "The hot pot broth is sweet, sour, and light — very enjoyable. The beef is tender and fresh, vegetables are clean. The restaurant is not too crowded, atmosphere is comfortable, staff are enthusiastic. I will come back to support." %}"</p>
             </div>
 
             <div class="card review-card">
@@ -182,7 +198,7 @@
                         </div>
                         <div>
                             <h4>Tiên Thủy</h4>
-                            <div class="review-stars">
+                            <div class="stars stars-sm">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -192,7 +208,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="review-text">"Bò nhúng giấm ở Cần Thơ chỉ có chỗ này đúng gu mình nhất. Vị thanh vừa, hông bị chua giấm. Thịt và rau đều tươi. Mãi ủng hộ"</p>
+                <p class="review-text">"{% trans "This is the only vinegar hot pot in Can Tho that truly matches my taste. The flavor is balanced, not overly sour. Meat and vegetables are fresh. Always supporting!" %}"</p>
             </div>
 
             <div class="card review-card">
@@ -203,7 +219,7 @@
                         </div>
                         <div>
                             <h4>Hàng Anh Tài</h4>
-                            <div class="review-stars">
+                            <div class="stars stars-sm">
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
@@ -213,7 +229,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="review-text">"Quán ăn truyền thống tuyệt vời! Bò nhúng giấm đúng vị, gia vị đậm đà. Có thêm mấy chiến hữu xưa để ôn lại chuyện cũ thì quá tuyệt vời."</p>
+                <p class="review-text">"{% trans "A wonderful traditional restaurant! Authentic vinegar hot pot flavor, rich seasoning. Catching up with old friends here is absolutely perfect." %}"</p>
             </div>
         </div>
     </div>

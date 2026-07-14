@@ -16,7 +16,11 @@ def get_staff_role(user):
         return None
     if user.is_superuser:
         return "admin"
-    return user.role if user.role in ("staff", "manager") else "staff"
+    if user.role == "manager":
+        return "manager"
+    if user.role == "staff":
+        return "staff"
+    return None
 
 
 def is_manager_or_admin(user):

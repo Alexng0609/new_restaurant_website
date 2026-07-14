@@ -1,6 +1,7 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +34,26 @@
             </a>
 
             <div class="nav-actions">
+                <!-- Language switch -->
+                <div class="language-switch" role="group" aria-label="{% trans 'Language' %}">
+                    <i class="fas fa-globe language-icon" aria-hidden="true"></i>
+                    <form action="{% url 'set_language' %}" method="post" class="language-switch-form">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        {% get_current_language as CURRENT_LANG %}
+                        {% get_available_languages as AVAILABLE_LANGUAGES %}
+                        {% for lang_code, lang_name in AVAILABLE_LANGUAGES %}
+                        <button type="submit"
+                                name="language"
+                                value="{{ lang_code }}"
+                                class="lang-btn{% if lang_code == CURRENT_LANG %} active{% endif %}"
+                                title="{{ lang_name }}">
+                            {{ lang_code|upper }}
+                        </button>
+                        {% endfor %}
+                    </form>
+                </div>
+
                 <!-- Cart icon with badge -->
                 <a href="{% url 'cart_detail' %}" class="cart-link">
                     <i class="fas fa-shopping-cart cart-icon"></i>
@@ -43,7 +64,7 @@
 
                 <!-- Sidebar toggle: opens the full page menu -->
                 <button type="button" class="sidebar-toggle" id="sidebarToggle"
-                        aria-label="Mở menu" aria-expanded="false" aria-controls="sideMenu">
+                        aria-label="{% trans 'Open menu' %}" aria-expanded="false" aria-controls="sideMenu">
                     <span class="bar"></span>
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -58,16 +79,16 @@
     <!-- All site pages live in this sidebar -->
     <aside class="side-menu" id="sideMenu" aria-hidden="true">
         <div class="side-menu-header">
-            <span>Menu</span>
-            <button type="button" class="side-menu-close" id="sideMenuClose" aria-label="Đóng menu">&times;</button>
+            <span>{% trans "Menu" %}</span>
+            <button type="button" class="side-menu-close" id="sideMenuClose" aria-label="{% trans 'Close menu' %}">&times;</button>
         </div>
         <ul class="side-menu-links">
-            <li><a href="{% url 'index' %}"><i class="fas fa-house"></i> Trang Chủ</a></li>
-            <li><a href="{% url 'feeds' %}"><i class="fas fa-newspaper"></i> Tin Tức</a></li>
-            <li><a href="{% url 'menu' %}"><i class="fas fa-utensils"></i> Thực Đơn</a></li>
+            <li><a href="{% url 'index' %}"><i class="fas fa-house"></i> {% trans "Home" %}</a></li>
+            <li><a href="{% url 'feeds' %}"><i class="fas fa-newspaper"></i> {% trans "News" %}</a></li>
+            <li><a href="{% url 'menu' %}"><i class="fas fa-utensils"></i> {% trans "Menu" %}</a></li>
             <li>
-                <a href="{% url 'cart_detail' %}" class ="sidebar-cart-link">
-                    <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+                <a href="{% url 'cart_detail' %}" class="sidebar-cart-link">
+                    <i class="fas fa-shopping-cart"></i> {% trans "Cart" %}
                     {% if cart_count > 0 %}
                     <span class="cart-badge" id="cart-count-sidebar">{{ cart_count }}</span>
                     {% endif %}
@@ -76,32 +97,26 @@
 
             {% if user.is_authenticated %}
                 {% if user.is_staff %}
-                    <!-- Every staff level sees the order dashboard. Menu/feeds
-                         editing (visible inside menu.html/feeds.html itself,
-                         not a separate sidebar link) is manager+ only.
-                         Reports stay admin-only. -->
-                    <li><a href="{% url 'staff_order_list' %}"><i class="fas fa-clipboard-list"></i> Đơn Hàng</a></li>
+                    <li><a href="{% url 'staff_order_list' %}"><i class="fas fa-clipboard-list"></i> {% trans "Orders" %}</a></li>
                     {% if user.is_superuser %}
-                    <li><a href="{% url 'staff_reports' %}"><i class="fas fa-chart-column"></i> Báo Cáo</a></li>
+                    <li><a href="{% url 'staff_reports' %}"><i class="fas fa-chart-column"></i> {% trans "Reports" %}</a></li>
                     {% endif %}
                 {% else %}
-                    <!-- History + profile for regular users -->
-                    <li><a href="#"><i class="fas fa-clock-rotate-left"></i> Lịch Sử</a></li>
-                    <li><a href="#"><i class="fas fa-user"></i> Hồ Sơ</a></li>
+                    <li><a href="{% url 'order_history' %}"><i class="fas fa-clock-rotate-left"></i> {% trans "Order History" %}</a></li>
+                    <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> {% trans "Profile" %}</a></li>
                 {% endif %}
 
                 <li>
-                    <!-- Logout must be a POST request with a CSRF token, never a plain GET link -->
                     <form method="post" action="{% url 'logout' %}" class="logout-form">
                         {% csrf_token %}
                         <button type="submit" class="logout-btn">
-                            <i class="fas fa-right-from-bracket"></i> Đăng Xuất
+                            <i class="fas fa-right-from-bracket"></i> {% trans "Log Out" %}
                         </button>
                     </form>
                 </li>
             {% else %}
-                <li><a href="{% url 'login' %}"><i class="fas fa-right-to-bracket"></i> Đăng Nhập</a></li>
-                <li><a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Đăng Ký</a></li>
+                <li><a href="{% url 'login' %}"><i class="fas fa-right-to-bracket"></i> {% trans "Log In" %}</a></li>
+                <li><a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> {% trans "Sign Up" %}</a></li>
             {% endif %}
         </ul>
     </aside>
@@ -133,9 +148,8 @@
                         <h3>Bò Nhúng Giấm Ngày Xưa</h3>
                     </a>
                 </div>
-                <p>Món Ăn Truyền Thống Việt Nam</p>
+                <p>{% trans "Traditional Vietnamese Cuisine" %}</p>
 
-                <!-- Address and contact info -->
                 <div class="footer-contact">
                     <div>
                         <i class="fas fa-map-marker-alt"></i>
@@ -163,12 +177,18 @@
                     <a href="https://www.facebook.com/search/top?q=Bò%20Nhúng%20Giấm%20Ngày%20Xưa" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.tiktok.com/@bonhunggiamngayxua?_r=1&_t=ZS-91uRtTjYabR" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
                 </div>
-                <p>&copy; 2024 Bò Nhúng Giấm Ngày Xưa. Bản quyền thuộc về.</p>
+                <p>&copy; 2024 Bò Nhúng Giấm Ngày Xưa. {% trans "All rights reserved." %}</p>
             </div>
         </div>
     </footer>
 
-    <!-- Site Scripts (sidebar toggle logic now lives here too) -->
+    <script>
+        window.I18N = {
+            adding: "{% filter escapejs %}{% trans 'Adding...' %}{% endfilter %}",
+            addToCartError: "{% filter escapejs %}{% trans 'Failed to add to cart.' %}{% endfilter %}",
+            networkError: "{% filter escapejs %}{% trans 'Network connection error.' %}{% endfilter %}",
+        };
+    </script>
     <script src="{% static 'js/base.js' %}"></script>
 
     {% block extra_js %}{% endblock %}

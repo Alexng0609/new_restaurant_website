@@ -2,24 +2,28 @@ from accounts.utils import is_manager_or_admin
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db import transaction
+from django.db.models import Count, DecimalField, ExpressionWrapper, F, Sum
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _lazy
 from django.views import View
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import DetailView, FormView, ListView, TemplateView
+from datetime import timedelta
+import csv
 
 from restaurant_site.models import MenuItem
 
 from .forms import CancelOrderForm, CheckoutForm
 from .models import CartItem, Order, OrderItem
-from .utils import get_or_create_cart
-
-from django.db.models import Count, Sum, F, DecimalField, ExpressionWrapper
-from django.utils import timezone
-from datetime import timedelta
-from django.views.generic import TemplateView
-import csv
-from django.http import HttpResponse, JsonResponse
+from .utils import (
+    can_view_order,
+    get_or_create_cart,
+    grant_order_confirmation_access,
+    parse_positive_int,
+)
 
 
 class StaffRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -36,7 +40,17 @@ class AddToCartView(View):
     def post(self, request, item_id):
         menu_item = get_object_or_404(MenuItem, id=item_id, is_available=True)
         cart = get_or_create_cart(request)
-        quantity = max(int(request.POST.get("quantity", 1)), 1)
+        is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
+
+        try:
+            quantity = parse_positive_int(request.POST.get("quantity", 1))
+        except ValueError:
+            if is_ajax:
+                return JsonResponse(
+                    {"success": False, "error": _("Invalid quantity.")}, status=400
+                )
+            messages.error(request, _("Invalid quantity."))
+            return redirect(request.META.get("HTTP_REFERER") or reverse("menu"))
 
         cart_item, created = CartItem.objects.get_or_create(
             cart=cart, menu_item=menu_item, defaults={"quantity": quantity}
@@ -45,17 +59,18 @@ class AddToCartView(View):
             cart_item.quantity += quantity
             cart_item.save(update_fields=["quantity"])
 
-        is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
-
         if is_ajax:
             return JsonResponse(
                 {
                     "success": True,
                     "cart_total_items": cart.total_items,
+                    "message": _('"%(name)s" added to cart.') % {"name": menu_item.name},
                 }
             )
 
-        messages.success(request, f"{menu_item.name} added to cart.")
+        messages.success(
+            request, _('"%(name)s" added to cart.') % {"name": menu_item.name}
+        )
         next_url = (
             request.POST.get("next")
             or request.META.get("HTTP_REFERER")
@@ -70,7 +85,12 @@ class UpdateCartItemView(View):
     def post(self, request, item_id):
         cart = get_or_create_cart(request)
         cart_item = get_object_or_404(CartItem, id=item_id, cart=cart)
-        quantity = int(request.POST.get("quantity", 1))
+
+        try:
+            quantity = parse_positive_int(request.POST.get("quantity", 1))
+        except ValueError:
+            messages.error(request, _("Invalid quantity."))
+            return redirect("cart_detail")
 
         if quantity <= 0:
             cart_item.delete()
@@ -105,7 +125,7 @@ class CheckoutView(FormView):
     def dispatch(self, request, *args, **kwargs):
         self.cart = get_or_create_cart(request)
         if self.cart.total_items == 0:
-            messages.warning(request, "Your cart is empty.")
+            messages.warning(request, _("Your cart is empty."))
             return redirect("cart_detail")
         return super().dispatch(request, *args, **kwargs)
 
@@ -124,11 +144,22 @@ class CheckoutView(FormView):
 
     @transaction.atomic
     def form_valid(self, form):
+        unavailable = [
+            cart_item.menu_item.name
+            for cart_item in self.cart.items.select_related("menu_item")
+            if not cart_item.menu_item.is_available
+        ]
+        if unavailable:
+            names = ", ".join(unavailable)
+            messages.error(
+                self.request,
+                _("Some items are no longer available: %(names)s. Please update your cart.")
+                % {"names": names},
+            )
+            return redirect("cart_detail")
+
         order = form.save(commit=False)
         order.user = self.request.user if self.request.user.is_authenticated else None
-        # Set total_price from the cart BEFORE the first save - the cart items
-        # still exist at this point, so we don't need OrderItems to exist first,
-        # and total_price is never briefly unset/zero in the database.
         order.total_price = self.cart.total_price
         order.save()
 
@@ -142,6 +173,7 @@ class CheckoutView(FormView):
             )
 
         self.cart.items.all().delete()
+        grant_order_confirmation_access(self.request, order.order_number)
         return redirect("order_confirmation", order_number=order.order_number)
 
 
@@ -152,12 +184,31 @@ class OrderConfirmationView(DetailView):
     slug_field = "order_number"
     slug_url_kwarg = "order_number"
 
+    def get_object(self, queryset=None):
+        order = get_object_or_404(Order, order_number=self.kwargs["order_number"])
+        if not can_view_order(self.request, order):
+            raise Http404("Order not found.")
+        return order
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Guests get invited to create an account (accounts app) to track
-        # this and future orders + earn reward points later.
         context["show_account_invite"] = self.object.user is None
         return context
+
+
+class OrderHistoryView(LoginRequiredMixin, ListView):
+    """Logged-in customers can view their past orders."""
+
+    model = Order
+    template_name = "orders/order_history.html"
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        return (
+            Order.objects.filter(user=self.request.user)
+            .prefetch_related("items")
+            .order_by("-created_at")
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -191,16 +242,28 @@ class AdvanceOrderStatusView(StaffRequiredMixin, View):
 
     def post(self, request, order_number):
         order = get_object_or_404(Order, order_number=order_number)
+        if order.status in (Order.STATUS_CANCELLED, Order.STATUS_DELIVERED):
+            messages.warning(
+                request,
+                _("Order #%(number)s cannot be advanced further.")
+                % {"number": order.order_number},
+            )
+            return redirect(request.POST.get("next") or "staff_order_list")
+
         next_status = order.get_next_status()
         if next_status:
             order.status = next_status
             order.save(update_fields=["status"])
             messages.success(
-                request, f"Đơn #{order.order_number} -> {order.get_status_display()}"
+                request,
+                _("Order #%(number)s -> %(status)s")
+                % {"number": order.order_number, "status": order.get_status_display()},
             )
         else:
             messages.info(
-                request, f"Đơn #{order.order_number} không thể chuyển trạng thái tiếp."
+                request,
+                _("Order #%(number)s cannot be advanced further.")
+                % {"number": order.order_number},
             )
         return redirect(request.POST.get("next") or "staff_order_list")
 
@@ -214,6 +277,13 @@ class CancelOrderStatusView(StaffRequiredMixin, FormView):
 
     def dispatch(self, request, *args, **kwargs):
         self.order = get_object_or_404(Order, order_number=kwargs["order_number"])
+        if self.order.status in (Order.STATUS_CANCELLED, Order.STATUS_DELIVERED):
+            messages.warning(
+                request,
+                _("Order #%(number)s cannot be cancelled in its current status.")
+                % {"number": self.order.order_number},
+            )
+            return redirect("staff_order_list")
         return super().dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -239,7 +309,11 @@ class CancelOrderStatusView(StaffRequiredMixin, FormView):
                 "cancelled_by",
             ]
         )
-        messages.success(self.request, f"Đơn #{self.order.order_number} đã bị hủy.")
+        messages.success(
+            self.request,
+            _("Order #%(number)s has been cancelled.")
+            % {"number": self.order.order_number},
+        )
         self._next_url = self.request.POST.get("next")
         return super().form_valid(form)
 
@@ -248,11 +322,49 @@ class CancelOrderStatusView(StaffRequiredMixin, FormView):
 
 
 PERIOD_CHOICES = [
-    ("today", "Hôm Nay"),
-    ("week", "Tuần Này"),
-    ("month", "Tháng Này"),
-    ("year", "Năm Nay"),
+    ("today", _lazy("Today")),
+    ("week", _lazy("This Week")),
+    ("month", _lazy("This Month")),
+    ("year", _lazy("This Year")),
 ]
+
+VALID_PERIODS = {value for value, _ in PERIOD_CHOICES}
+
+
+def get_report_period(request):
+    """Return (period_key, start_datetime) for report filters."""
+    period = request.GET.get("period", "today")
+    now = timezone.now()
+
+    if period == "week":
+        start = now - timedelta(days=7)
+    elif period == "month":
+        start = now - timedelta(days=30)
+    elif period == "year":
+        start = now - timedelta(days=365)
+    else:
+        period = "today"
+        start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    if period not in VALID_PERIODS:
+        period = "today"
+        start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    return period, start
+
+
+def get_period_orders(start):
+    return (
+        Order.objects.filter(created_at__gte=start)
+        .select_related("user", "cancelled_by")
+        .prefetch_related("items")
+        .order_by("-created_at")
+    )
+
+
+def get_translated_period_choices():
+    """Eagerly translate period labels for templates."""
+    return [(value, _(label)) for value, label in PERIOD_CHOICES]
 
 
 class ReportsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
@@ -266,19 +378,8 @@ class ReportsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["period_choices"] = PERIOD_CHOICES
-        period = self.request.GET.get("period", "today")
-        now = timezone.now()
-
-        if period == "week":
-            start = now - timedelta(days=7)
-        elif period == "month":
-            start = now - timedelta(days=30)
-        elif period == "year":
-            start = now - timedelta(days=365)
-        else:
-            period = "today"
-            start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        context["period_choices"] = get_translated_period_choices()
+        period, start = get_report_period(self.request)
 
         orders_qs = Order.objects.filter(created_at__gte=start)
         completed_orders = orders_qs.exclude(status=Order.STATUS_CANCELLED)
@@ -295,7 +396,7 @@ class ReportsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             orders_qs.values_list("status").annotate(count=Count("id"))
         )
         status_breakdown = [
-            {"value": value, "label": label, "count": status_counts.get(value, 0)}
+            {"value": value, "label": _(label), "count": status_counts.get(value, 0)}
             for value, label in Order.STATUS_CHOICES
         ]
 
@@ -334,6 +435,45 @@ class ReportsView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
         return context
 
 
+class ReportDetailView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    """Admin-only order-by-order breakdown for a selected report period."""
+
+    template_name = "orders/reports_detail.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        period, start = get_report_period(self.request)
+        orders_qs = get_period_orders(start)
+        completed_orders = orders_qs.exclude(status=Order.STATUS_CANCELLED)
+
+        revenue_agg = completed_orders.aggregate(
+            total=Sum("total_price"), count=Count("id")
+        )
+        total_revenue = revenue_agg["total"] or 0
+        completed_count = revenue_agg["count"] or 0
+
+        context.update(
+            {
+                "period": period,
+                "period_choices": get_translated_period_choices(),
+                "orders": orders_qs,
+                "total_orders": orders_qs.count(),
+                "completed_count": completed_count,
+                "cancelled_count": orders_qs.filter(
+                    status=Order.STATUS_CANCELLED
+                ).count(),
+                "total_revenue": total_revenue,
+                "avg_order_value": (
+                    total_revenue / completed_count if completed_count else 0
+                ),
+            }
+        )
+        return context
+
+
 class ReportsExportView(LoginRequiredMixin, UserPassesTestMixin, View):
     """CSV export of the same report data as ReportsView, for the selected period."""
 
@@ -341,24 +481,12 @@ class ReportsExportView(LoginRequiredMixin, UserPassesTestMixin, View):
         return self.request.user.is_superuser
 
     def get(self, request):
-        period = request.GET.get("period", "today")
-        now = timezone.now()
-
-        if period == "week":
-            start = now - timedelta(days=7)
-        elif period == "month":
-            start = now - timedelta(days=30)
-        elif period == "year":
-            start = now - timedelta(days=365)
-        else:
-            period = "today"
-            start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-
-        orders_qs = Order.objects.filter(created_at__gte=start).order_by("-created_at")
+        period, start = get_report_period(request)
+        orders_qs = get_period_orders(start)
 
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = (
-            f'attachment; filename="bao_cao_{period}_{now:%Y%m%d_%H%M}.csv"'
+            f'attachment; filename="bao_cao_{period}_{timezone.now():%Y%m%d_%H%M}.csv"'
         )
 
         writer = csv.writer(response)

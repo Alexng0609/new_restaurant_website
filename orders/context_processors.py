@@ -1,6 +1,5 @@
-# orders/context_processors.py
-from .utils import get_or_create_cart
+from .utils import get_cart_count
 
 
 def cart_count(request):
-    return {"cart_count": get_or_create_cart(request).total_items}
+    return {"cart_count": get_cart_count(request)}

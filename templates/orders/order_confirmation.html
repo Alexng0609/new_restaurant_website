@@ -1,50 +1,52 @@
 {% extends 'base.html' %}
+{% load i18n %}
+{% load custom_filters %}
 
-{% block title %}Xác Nhận Đơn Hàng - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "Order Confirmation" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block content %}
 <div class="page-header">
-    <h1>Cảm Ơn Bạn!</h1>
-    <p>Đơn hàng #{{ order.order_number }} đã được ghi nhận</p>
+    <h1>{% trans "Thank You!" %}</h1>
+    <p>{% blocktrans with number=order.order_number %}Order #{{ number }} has been received{% endblocktrans %}</p>
 </div>
 
 <div class="review-summary">
-    <p><strong>Trạng thái:</strong> {{ order.get_status_display }}</p>
-    <p><strong>Thời gian đặt hàng:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
-    <p><strong>Người nhận:</strong> {{ order.customer_name }}</p>
-    <p><strong>Điện thoại:</strong> {{ order.customer_phone }}</p>
-    <p><strong>Email:</strong> {{ order.customer_email }}</p>
-    <p><strong>Hình thức nhận hàng:</strong> {{ order.get_fulfillment_type_display }}</p>
+    <p><strong>{% trans "Status" %}:</strong> {{ order.get_status_display }}</p>
+    <p><strong>{% trans "Order time" %}:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
+    <p><strong>{% trans "Recipient" %}:</strong> {{ order.customer_name }}</p>
+    <p><strong>{% trans "Phone" %}:</strong> {{ order.customer_phone }}</p>
+    <p><strong>{% trans "Email" %}:</strong> {{ order.customer_email }}</p>
+    <p><strong>{% trans "Fulfillment method" %}:</strong> {{ order.get_fulfillment_type_display }}</p>
     {% if order.fulfillment_type == 'delivery' %}
-    <p><strong>Địa chỉ giao hàng:</strong> {{ order.delivery_address }}</p>
+    <p><strong>{% trans "Delivery address" %}:</strong> {{ order.delivery_address }}</p>
     {% endif %}
-    <p><strong>Thanh toán:</strong> {{ order.get_payment_method_display }}</p>
+    <p><strong>{% trans "Payment" %}:</strong> {{ order.get_payment_method_display }}</p>
     {% if order.notes %}
-    <p><strong>Ghi chú:</strong> {{ order.notes }}</p>
+    <p><strong>{% trans "Notes" %}:</strong> {{ order.notes }}</p>
     {% endif %}
 </div>
 
-<h2 class="section-title">Chi Tiết Đơn Hàng</h2>
+<h2 class="section-title">{% trans "Order Details" %}</h2>
 
 <div class="grid grid-lg">
     {% for order_item in order.items.all %}
     <div class="item-card">
         <h3>{{ order_item.item_name }}</h3>
-        <p>{{ order_item.quantity }} x {{ order_item.item_price|floatformat:0 }} ₫</p>
-        <p class="price">{{ order_item.subtotal|floatformat:0 }} ₫</p>
+        <p>{{ order_item.quantity }} x {{ order_item.item_price|vnd_format }} ₫</p>
+        <p class="price">{{ order_item.subtotal|vnd_format }} ₫</p>
     </div>
     {% endfor %}
 </div>
 
 <div class="cta-section">
-    <h2>Tổng Cộng: {{ order.total_price|floatformat:0 }} ₫</h2>
+    <h2>{% trans "Total" %}: {{ order.total_price|vnd_format }} ₫</h2>
 </div>
 
 {% if show_account_invite %}
 <div class="cta-section">
-    <h2>Tạo Tài Khoản Ngay</h2>
-    <p>Theo dõi đơn hàng và tích điểm thưởng cho những lần đặt sau!</p>
-    <a href="{% url 'signup' %}?email={{ order.customer_email|urlencode }}" class="view-reviews-btn">Đăng Ký Tài Khoản</a>
+    <h2>{% trans "Create an Account" %}</h2>
+    <p>{% trans "Track orders and earn reward points on future visits!" %}</p>
+    <a href="{% url 'signup' %}?email={{ order.customer_email|urlencode }}" class="view-reviews-btn">{% trans "Sign Up" %}</a>
 </div>
 {% endif %}
 {% endblock %}

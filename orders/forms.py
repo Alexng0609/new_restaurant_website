@@ -1,5 +1,6 @@
 from django import forms
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 from .models import Order
 
@@ -7,9 +8,6 @@ from .models import Order
 class CheckoutForm(forms.ModelForm):
     class Meta:
         model = Order
-        # payment_method is intentionally NOT a form field yet - only cash-on-delivery
-        # works right now, so it just uses the model's default. Add it here once an
-        # online gateway (VNPay/MoMo) is wired up, so customers get a real choice.
         fields = [
             "customer_name",
             "customer_email",
@@ -19,9 +17,26 @@ class CheckoutForm(forms.ModelForm):
             "notes",
         ]
         widgets = {
+            "customer_name": forms.TextInput(attrs={"class": "form-control"}),
+            "customer_email": forms.EmailInput(attrs={"class": "form-control"}),
+            "customer_phone": forms.TextInput(attrs={"class": "form-control"}),
             "fulfillment_type": forms.RadioSelect,
-            "delivery_address": forms.Textarea(attrs={"rows": 3}),
-            "notes": forms.Textarea(attrs={"rows": 2, "placeholder": "Optional"}),
+            "delivery_address": forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
+            "notes": forms.Textarea(
+                attrs={
+                    "rows": 2,
+                    "placeholder": _("Optional notes"),
+                    "class": "form-control",
+                }
+            ),
+        }
+        labels = {
+            "customer_name": _("Full name"),
+            "customer_email": _("Email"),
+            "customer_phone": _("Phone number"),
+            "fulfillment_type": _("Fulfillment method"),
+            "delivery_address": _("Delivery address"),
+            "notes": _("Notes"),
         }
 
     def clean(self):
@@ -30,37 +45,31 @@ class CheckoutForm(forms.ModelForm):
         delivery_address = cleaned_data.get("delivery_address")
 
         if fulfillment_type == Order.FULFILLMENT_DELIVERY and not delivery_address:
-            self.add_error("delivery_address", "Vui lòng nhập địa chỉ giao hàng.")
+            self.add_error(
+                "delivery_address",
+                _("Please enter a delivery address."),
+            )
 
         return cleaned_data
 
 
 class CancelOrderForm(forms.Form):
-    """Used by staff to cancel an order. `require_code` is set by the view based
-    on whether request.user is a superuser - non-superuser staff must enter the
-    shared admin code. This is a simple placeholder for now (one shared code in
-    settings); swap for per-manager codes/permissions later without changing
-    the calling view much.
-    """
-
     reason = forms.CharField(
-        label="Lý do hủy đơn",
-        widget=forms.Textarea(attrs={"rows": 3}),
+        label=_("Cancellation reason"),
+        widget=forms.Textarea(attrs={"rows": 3, "class": "form-control"}),
         required=True,
     )
     admin_code = forms.CharField(
-        label="Mã xác nhận quản lý",
-        widget=forms.PasswordInput(render_value=False),
+        label=_("Manager confirmation code"),
+        widget=forms.PasswordInput(render_value=False, attrs={"class": "form-control"}),
         required=False,
-        help_text="Chỉ cần nhập nếu bạn không phải quản lý cấp cao (superuser).",
+        help_text=_("Required unless you are a senior manager (superuser)."),
     )
 
     def __init__(self, *args, require_code=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.require_code = require_code
         if not require_code:
-            # Superusers don't need the field at all - drop it instead of just
-            # hiding it, so the template doesn't render an unused input.
             del self.fields["admin_code"]
 
     def clean_admin_code(self):
@@ -68,8 +77,10 @@ class CancelOrderForm(forms.Form):
         expected = getattr(settings, "ADMIN_CANCEL_CODE", None)
         if not expected:
             raise forms.ValidationError(
-                "Chưa thiết lập ADMIN_CANCEL_CODE trong settings.py - liên hệ quản trị viên."
+                _(
+                    "ADMIN_CANCEL_CODE is not configured in settings — contact an administrator."
+                )
             )
         if code != expected:
-            raise forms.ValidationError("Mã xác nhận không đúng.")
+            raise forms.ValidationError(_("Confirmation code is incorrect."))
         return code

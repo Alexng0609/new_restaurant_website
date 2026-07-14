@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load custom_filters %}
+
+{% block title %}{% trans "Sales Details" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📋 {% trans "Sales Details" %}</h1>
+    <p>{% trans "Order-by-order breakdown for the selected period." %}</p>
+</div>
+
+<div class="category-filter">
+    {% for value, label in period_choices %}
+    <a href="{% url 'staff_reports_detail' %}?period={{ value }}"
+       class="category-btn {% if period == value %}active{% endif %}">
+        {{ label }}
+    </a>
+    {% endfor %}
+    <a href="{% url 'staff_reports' %}?period={{ period }}" class="view-reviews-btn">
+        <i class="fas fa-arrow-left"></i> {% trans "Back to Reports" %}
+    </a>
+    <a href="{% url 'staff_reports_export' %}?period={{ period }}" class="view-reviews-btn">
+        <i class="fas fa-file-csv"></i> {% trans "Export CSV" %}
+    </a>
+</div>
+
+<div class="cta-section">
+    <h2>{% trans "Total Sales" %}: {{ total_revenue|vnd_format }} ₫</h2>
+    <p>
+        {{ completed_count }} {% trans "completed orders" %}
+        {% if cancelled_count %}
+        · {{ cancelled_count }} {% trans "cancelled" %}
+        {% endif %}
+        · {{ total_orders }} {% trans "total" %}
+    </p>
+    <p>{% trans "Average order value" %}: {{ avg_order_value|vnd_format }} ₫</p>
+</div>
+
+<h2 class="section-title">{% trans "Orders" %} ({{ total_orders }})</h2>
+
+{% if orders %}
+<div class="grid grid-lg">
+    {% for order in orders %}
+    <div class="item-card {% if order.status == 'cancelled' %}order-card-cancelled{% endif %}">
+        <h3>{% trans "Order" %} #{{ order.order_number }}</h3>
+
+        <p class="availability {% if order.status == 'cancelled' %}unavailable{% elif order.status == 'delivered' %}available{% else %}order-status-neutral{% endif %}">
+            {{ order.get_status_display }}
+        </p>
+
+        <p><strong>{% trans "Customer" %}:</strong> {{ order.customer_name }}</p>
+        <p><strong>{% trans "Phone" %}:</strong> {{ order.customer_phone }}</p>
+        <p><strong>{% trans "Email" %}:</strong> {{ order.customer_email }}</p>
+        <p><strong>{% trans "Fulfillment method" %}:</strong> {{ order.get_fulfillment_type_display }}</p>
+        {% if order.fulfillment_type == 'delivery' %}
+        <p><strong>{% trans "Delivery address" %}:</strong> {{ order.delivery_address }}</p>
+        {% endif %}
+        <p><strong>{% trans "Payment" %}:</strong> {{ order.get_payment_method_display }}</p>
+        {% if order.notes %}
+        <p><strong>{% trans "Notes" %}:</strong> {{ order.notes }}</p>
+        {% endif %}
+        <p><strong>{% trans "Placed on" %}:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
+
+        {% if order.status == 'cancelled' %}
+        <p><strong>{% trans "Cancellation reason" %}:</strong> {{ order.cancellation_reason }}</p>
+        {% if order.cancelled_at %}
+        <p><strong>{% trans "Cancelled at" %}:</strong> {{ order.cancelled_at|date:"d/m/Y H:i" }}
+            {% if order.cancelled_by %}— {% trans "by" %} {{ order.cancelled_by }}{% endif %}
+        </p>
+        {% endif %}
+        {% endif %}
+
+        <h4>{% trans "Items" %}</h4>
+        <ul class="order-item-list">
+            {% for order_item in order.items.all %}
+            <li>
+                {{ order_item.quantity }} x {{ order_item.item_name }}
+                — {{ order_item.item_price|vnd_format }} ₫
+                <strong>({{ order_item.subtotal|vnd_format }} ₫)</strong>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <p class="price">{% trans "Total" %}: {{ order.total_price|vnd_format }} ₫</p>
+
+        <div class="item-card-footer">
+            <a href="{% url 'staff_order_list' %}" class="view-reviews-btn">
+                <i class="fas fa-list"></i> {% trans "Manage in Orders" %}
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>{% trans "No orders for this time period." %}</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -21,6 +21,7 @@ urlpatterns = [
         views.OrderConfirmationView.as_view(),
         name="order_confirmation",
     ),
+    path("history/", views.OrderHistoryView.as_view(), name="order_history"),
     # Staff order management
     path("staff/orders/", views.OrderManagementView.as_view(), name="staff_order_list"),
     path(
@@ -33,10 +34,15 @@ urlpatterns = [
         views.CancelOrderStatusView.as_view(),
         name="cancel_order_status",
     ),
-    path("staff/reports/", views.ReportsView.as_view(), name="staff_reports"),
+    path(
+        "staff/reports/detail/",
+        views.ReportDetailView.as_view(),
+        name="staff_reports_detail",
+    ),
     path(
         "staff/reports/export/",
         views.ReportsExportView.as_view(),
         name="staff_reports_export",
     ),
+    path("staff/reports/", views.ReportsView.as_view(), name="staff_reports"),
 ]

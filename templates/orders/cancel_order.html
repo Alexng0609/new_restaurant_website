@@ -1,21 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
-{% block title %}Hủy Đơn Hàng - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block title %}{% trans "Cancel Order" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="page-header">
-    <h1>Hủy Đơn #{{ order.order_number }}</h1>
+    <h1>{% blocktrans with number=order.order_number %}Cancel Order #{{ number }}{% endblocktrans %}</h1>
     <p>{{ order.customer_name }} — {{ order.total_price|vnd_format }} ₫</p>
 </div>
 
-<div class="review-summary">
+<div class="detail-panel form-card">
     <form method="post">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
-        {{ form.as_p }}
-        <button type="submit" class="admin-btn">Xác Nhận Hủy Đơn</button>
-        <a href="{% url 'staff_order_list' %}" class="view-reviews-btn">Quay Lại</a>
+
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="form-errors">{{ field.errors }}</div>{% endif %}
+            {% if field.help_text %}<p class="form-help">{{ field.help_text }}</p>{% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="admin-btn">{% trans "Confirm Cancellation" %}</button>
+            <a href="{% url 'staff_order_list' %}" class="view-reviews-btn">{% trans "Back" %}</a>
+        </div>
     </form>
 </div>
 {% endblock %}

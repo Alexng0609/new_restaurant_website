@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}{{ news.title }} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{{ news.get_localized_title }} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block content %}
 <div class="section-cta">
     <a href="{% url 'feeds' %}" class="view-reviews-btn">
-        <i class="fas fa-arrow-left"></i> Quay Lại Tin Tức
+        <i class="fas fa-arrow-left"></i> {% trans "Back to News" %}
     </a>
 </div>
 
@@ -14,7 +15,7 @@
     {% if staff_role == 'manager' or staff_role == 'admin' %}
     <div class="admin-controls">
         <a href="/admin/restaurant/newsfeed/{{ news.id }}/change/" class="admin-btn">
-            <i class="fas fa-edit"></i> Sửa
+            <i class="fas fa-edit"></i> {% trans "Edit" %}
         </a>
     </div>
     {% endif %}
@@ -27,8 +28,31 @@
         <div class="news-date">
             📅 {{ news.created_at|date:"d/m/Y" }}
         </div>
-        <h1 class="news-title">{{ news.title }}</h1>
-        <div class="news-text">{{ news.content|linebreaks }}</div>
+        <h1 class="news-title">{{ news.get_localized_title }}</h1>
+        <div class="news-text">{{ news.get_localized_content|linebreaks }}</div>
     </div>
 </div>
+
+{% if related_news %}
+<section>
+    <h2 class="section-title">{% trans "Related News" %}</h2>
+    <div class="grid">
+        {% for item in related_news %}
+        <a href="{% url 'feed_detail' item.id %}" class="card news-card news-card-compact">
+            <div class="news-card-media">
+                {% include "news_media.html" with news=item %}
+            </div>
+            <div class="news-card-content">
+                <h3>{{ item.get_localized_title }}</h3>
+                <p>{{ item.get_localized_content|truncatewords:30 }}</p>
+                <small>
+                    <i class="fas fa-calendar"></i>
+                    {{ item.created_at|date:"d/m/Y" }}
+                </small>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
 {% endblock %}

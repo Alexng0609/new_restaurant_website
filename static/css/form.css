@@ -1,7 +1,5 @@
-/* form.css — shared styles for the "add" forms (feed_form.html, menu_form.html).
-   Uses the same tokens as the rest of the site (--card-bg, --border-color,
-   --primary-color, --text-color) rather than a new palette. Buttons reuse
-   .add-btn and .view-reviews-btn from base.css/menu.css instead of new ones. */
+/* form.css — shared styles for auth and data-entry forms.
+   Buttons reuse .add-btn and .view-reviews-btn from base.css. */
 
 .form-card {
     max-width: 700px;
@@ -22,9 +20,12 @@
 
 .form-group input[type="text"],
 .form-group input[type="number"],
+.form-group input[type="email"],
+.form-group input[type="password"],
 .form-group input[type="file"],
 .form-group textarea,
-.form-group select {
+.form-group select,
+.form-group .form-control {
     width: 100%;
     padding: 0.75rem;
     border: 2px solid var(--border-color);
@@ -37,7 +38,8 @@
 
 .form-group input:focus,
 .form-group textarea:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group .form-control:focus {
     outline: none;
     border-color: var(--primary-color);
 }
@@ -57,7 +59,7 @@
 }
 
 .form-errors {
-    color: #dc3545;
+    color: var(--color-danger);
     font-size: 0.85rem;
     margin-top: 0.4rem;
 }
@@ -70,4 +72,32 @@
 
 .form-actions .add-btn {
     flex: 1;
+}
+
+.form-radio-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.form-radio-group li {
+    margin-bottom: 0.5rem;
+}
+
+.form-radio-group label {
+    display: inline;
+    font-weight: normal;
+    margin-left: 0.4rem;
+}
+
+.form-help {
+    font-size: 0.85rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-top: 0.4rem;
+}
+
+.form-footer-link {
+    margin-top: 1.5rem;
+    text-align: center;
 }

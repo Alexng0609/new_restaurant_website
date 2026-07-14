@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
 
-{% block title %}Báo Cáo - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+{% block title %}{% trans "Reports" %} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/menu.css' %}">
@@ -10,7 +11,7 @@
 
 {% block content %}
 <div class="page-header">
-    <h1>📊 Báo Cáo</h1>
+    <h1>📊 {% trans "Reports" %}</h1>
 </div>
 
 <div class="category-filter">
@@ -21,34 +22,42 @@
     </a>
     {% endfor %}
     <a href="{% url 'staff_reports_export' %}?period={{ period }}" class="view-reviews-btn">
-        <i class="fas fa-file-csv"></i> Xuất CSV
+        <i class="fas fa-file-csv"></i> {% trans "Export CSV" %}
     </a>
 </div>
 
 <div class="grid grid-lg">
-    <div class="item-card">
-        <h3>Doanh Thu</h3>
+    <a href="{% url 'staff_reports_detail' %}?period={{ period }}" class="item-card report-stat-link">
+        <h3>{% trans "Revenue" %}</h3>
         <p class="price">{{ total_revenue|vnd_format }} ₫</p>
-    </div>
-    <div class="item-card">
-        <h3>Tổng Đơn Hàng</h3>
+        <small>{% trans "Tap to view all orders" %}</small>
+    </a>
+    <a href="{% url 'staff_reports_detail' %}?period={{ period }}" class="item-card report-stat-link">
+        <h3>{% trans "Total Orders" %}</h3>
         <p class="price">{{ total_orders }}</p>
-    </div>
+        <small>{% trans "Tap to view all orders" %}</small>
+    </a>
     <div class="item-card">
-        <h3>Đơn Hoàn Thành</h3>
+        <h3>{% trans "Completed Orders" %}</h3>
         <p class="price">{{ completed_count }}</p>
     </div>
     <div class="item-card">
-        <h3>Đơn Hủy</h3>
+        <h3>{% trans "Cancelled Orders" %}</h3>
         <p class="price">{{ cancelled_count }}</p>
     </div>
     <div class="item-card">
-        <h3>Giá Trị TB / Đơn</h3>
+        <h3>{% trans "Average Order Value" %}</h3>
         <p class="price">{{ avg_order_value|vnd_format }} ₫</p>
     </div>
 </div>
 
-<h2 class="section-title">Đơn Hàng Theo Trạng Thái</h2>
+<div class="section-cta">
+    <a href="{% url 'staff_reports_detail' %}?period={{ period }}" class="view-reviews-btn">
+        <i class="fas fa-list"></i> {% trans "View Sales Details" %}
+    </a>
+</div>
+
+<h2 class="section-title">{% trans "Orders by Status" %}</h2>
 <div class="grid grid-lg">
     {% for row in status_breakdown %}
     <div class="item-card">
@@ -58,20 +67,20 @@
     {% endfor %}
 </div>
 
-<h2 class="section-title">Món Bán Chạy Nhất</h2>
+<h2 class="section-title">{% trans "Top Selling Items" %}</h2>
 {% if top_items %}
 <div class="grid grid-lg">
     {% for item in top_items %}
     <div class="item-card">
         <h3>{{ item.item_name }}</h3>
-        <p>Số lượng: {{ item.total_qty }}</p>
+        <p>{% trans "Quantity" %}: {{ item.total_qty }}</p>
         <p class="price">{{ item.total_revenue|vnd_format }} ₫</p>
     </div>
     {% endfor %}
 </div>
 {% else %}
 <div class="empty-state">
-    <p>Chưa có dữ liệu cho khoảng thời gian này.</p>
+    <p>{% trans "No data for this time period." %}</p>
 </div>
 {% endif %}
 {% endblock %}

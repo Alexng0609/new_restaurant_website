@@ -1,8 +1,5 @@
-/* menu.css — page-specific styles for the menu page.
-   Shared shell (.page-header, .admin-add-button, .admin-controls, .admin-btn,
-   .grid/.grid-lg, .news-card, .news-card-media, .news-overlay, .no-media-icon,
-   .news-card-content, .news-title, .news-text, .empty-state, .btn) already
-   lives in base.css and is reused here via those class names, not redefined. */
+/* menu.css — menu page and staff listing styles.
+   Shared shell (.page-header, .grid, .news-card, .add-btn, etc.) lives in base.css. */
 
 .category-filter {
     display: flex;
@@ -30,25 +27,12 @@
     color: white;
 }
 
-/* Sits top-right (base.css's .admin-controls sits top-left) so the two
-   never overlap — no override of .admin-controls needed.
-   Position/shape now comes from base.css's .corner-badge — pair as
-   class="corner-badge category-tag-overlay" in markup. Only the
-   things that make this badge distinct (color, pill shape, weight)
-   stay here. */
 .category-tag-overlay {
     background: rgba(212, 168, 67, 0.95);
     padding: 6px 14px;
     border-radius: 20px;
     font-weight: 700;
     z-index: 20;
-}
-
-.price-tag {
-    font-size: 1.7rem;
-    color: var(--primary-color);
-    font-weight: bold;
-    margin-bottom: 1rem;
 }
 
 .availability {
@@ -61,43 +45,57 @@
 }
 
 .available {
-    background: #d4edda;
-    color: #155724;
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
 }
 
 .unavailable {
-    background: #f8d7da;
-    color: #721c24;
+    background: var(--color-danger-bg);
+    color: var(--color-danger-text);
 }
 
-/* Add to cart button */
+.order-status-neutral {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.order-card-cancelled {
+    opacity: 0.85;
+}
+
+.report-stat-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.report-stat-link small {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.85rem;
+}
+
+.order-item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    text-align: left;
+}
+
+.order-item-list li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid rgba(107, 72, 66, 0.12);
+}
+
+.order-item-list li:last-child {
+    border-bottom: none;
+}
+
 .add-btn-form {
     margin-top: auto;
-}
-
-.add-btn {
-    width: 100%;
-    background: var(--primary-color);
-    padding: 12px 0;
-    text-align: center;
-    border-radius: 8px;
-    font-weight: 700;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: 0.25s;
-    font-size: 1rem;
-}
-
-.add-btn:hover {
-    background: var(--accent-color);
-    transform: translateY(-2px);
-}
-
-.add-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    transform: none;
 }
 
 /* Toast notification */
@@ -105,7 +103,7 @@
     position: fixed;
     top: 100px;
     right: 20px;
-    background: #28a745;
+    background: var(--color-success-border);
     color: white;
     padding: 1rem 1.5rem;
     border-radius: 8px;

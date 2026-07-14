@@ -1,0 +1,651 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: restaurant_website\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgid "\"%(name)s\" added to cart."
+msgstr "\"%(name)s\" added to cart."
+
+msgid "A wonderful traditional restaurant! Authentic vinegar hot pot flavor, rich seasoning. Catching up with old friends here is absolutely perfect."
+msgstr "A wonderful traditional restaurant! Authentic vinegar hot pot flavor, rich seasoning. Catching up with old friends here is absolutely perfect."
+
+msgid "Account created successfully. Please log in."
+msgstr "Account created successfully. Please log in."
+
+msgid "Add Item"
+msgstr "Add Item"
+
+msgid "Add Menu Item"
+msgstr "Add Menu Item"
+
+msgid "Add News Post"
+msgstr "Add News Post"
+
+msgid "Add to cart"
+msgstr "Add to cart"
+
+msgid "Adding..."
+msgstr "Adding..."
+
+msgid "ADMIN_CANCEL_CODE is not configured in settings — contact an administrator."
+msgstr "ADMIN_CANCEL_CODE is not configured in settings — contact an administrator."
+
+msgid "Advance to"
+msgstr "Advance to"
+
+msgid "All"
+msgstr "All"
+
+msgid "All rights reserved."
+msgstr "All rights reserved."
+
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+msgid "Attentive service"
+msgstr "Attentive service"
+
+msgid "Average Order Value"
+msgstr "Average Order Value"
+
+msgid "Average order value"
+msgstr "Average order value"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Back to Cart"
+msgstr "Back to Cart"
+
+msgid "Back to login"
+msgstr "Back to login"
+
+msgid "Back to Menu"
+msgstr "Back to Menu"
+
+msgid "Back to News"
+msgstr "Back to News"
+
+msgid "Back to Profile"
+msgstr "Back to Profile"
+
+msgid "Back to Reports"
+msgstr "Back to Reports"
+
+msgid "Browse Menu"
+msgstr "Browse Menu"
+
+msgid "by"
+msgstr "by"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Cancel Order"
+msgstr "Cancel Order"
+
+msgid "Cancel Order #%(number)s"
+msgstr "Cancel Order #%(number)s"
+
+msgid "Cancellation reason"
+msgstr "Cancellation reason"
+
+msgid "cancelled"
+msgstr "cancelled"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Cancelled at"
+msgstr "Cancelled at"
+
+msgid "Cancelled Orders"
+msgstr "Cancelled Orders"
+
+msgid "Cart"
+msgstr "Cart"
+
+msgid "Cash on delivery"
+msgstr "Cash on delivery"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Change my password"
+msgstr "Change my password"
+
+msgid "Change Password"
+msgstr "Change Password"
+
+msgid "Check back later for the latest updates!"
+msgstr "Check back later for the latest updates!"
+
+msgid "Check your inbox."
+msgstr "Check your inbox."
+
+msgid "Checkout"
+msgstr "Checkout"
+
+msgid "Close menu"
+msgstr "Close menu"
+
+msgid "Completed Orders"
+msgstr "Completed Orders"
+
+msgid "completed orders"
+msgstr "completed orders"
+
+msgid "Confirm Cancellation"
+msgstr "Confirm Cancellation"
+
+msgid "Confirm Order"
+msgstr "Confirm Order"
+
+msgid "Confirmation code is incorrect."
+msgstr "Confirmation code is incorrect."
+
+msgid "Confirmed"
+msgstr "Confirmed"
+
+msgid "Content"
+msgstr "Content"
+
+msgid "Content (English)"
+msgstr "Content (English)"
+
+msgid "Content (Vietnamese)"
+msgstr "Content (Vietnamese)"
+
+msgid "Convenient location"
+msgstr "Convenient location"
+
+msgid "Create an Account"
+msgstr "Create an Account"
+
+msgid "Create an account to track orders and earn reward points."
+msgstr "Create an account to track orders and earn reward points."
+
+msgid "Current password"
+msgstr "Current password"
+
+msgid "Customer"
+msgstr "Customer"
+
+msgid "Customer Reviews"
+msgstr "Customer Reviews"
+
+msgid "Delivered"
+msgstr "Delivered"
+
+msgid "Delivery"
+msgstr "Delivery"
+
+msgid "Delivery address"
+msgstr "Delivery address"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Description (English)"
+msgstr "Description (English)"
+
+msgid "Description (Vietnamese)"
+msgstr "Description (Vietnamese)"
+
+msgid "Diverse menu"
+msgstr "Diverse menu"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email Sent"
+msgstr "Email Sent"
+
+msgid "Enter Vietnamese text first. English fields are optional and used when the site language is EN."
+msgstr "Enter Vietnamese text first. English fields are optional and used when the site language is EN."
+
+msgid "Enter your current password, then your new password twice to confirm."
+msgstr "Enter your current password, then your new password twice to confirm."
+
+msgid "Enter your email address and we'll send instructions to reset your password."
+msgstr "Enter your email address and we'll send instructions to reset your password."
+
+msgid "Excellent quality"
+msgstr "Excellent quality"
+
+msgid "Experience traditional Vietnamese flavors with fresh ingredients and culinary passion."
+msgstr "Experience traditional Vietnamese flavors with fresh ingredients and culinary passion."
+
+msgid "Export CSV"
+msgstr "Export CSV"
+
+msgid "Failed to add to cart."
+msgstr "Failed to add to cart."
+
+msgid "Featured Dishes"
+msgstr "Featured Dishes"
+
+msgid "Fill in delivery details to complete your order."
+msgstr "Fill in delivery details to complete your order."
+
+msgid "First name"
+msgstr "First name"
+
+msgid "Forgot your password?"
+msgstr "Forgot your password?"
+
+msgid "Fulfillment method"
+msgstr "Fulfillment method"
+
+msgid "Full name"
+msgstr "Full name"
+
+msgid "Get Directions"
+msgstr "Get Directions"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Image (optional)"
+msgstr "Image (optional)"
+
+msgid "In stock"
+msgstr "In stock"
+
+msgid "Invalid quantity."
+msgstr "Invalid quantity."
+
+msgid "Item name"
+msgstr "Item name"
+
+msgid "Item name (English)"
+msgstr "Item name (English)"
+
+msgid "Item name (Vietnamese)"
+msgstr "Item name (Vietnamese)"
+
+msgid "Item names stay in Vietnamese. Add an English description for EN mode, or leave blank to auto-translate."
+msgstr "Item names stay in Vietnamese. Add an English description for EN mode, or leave blank to auto-translate."
+
+msgid "Items"
+msgstr "Items"
+
+msgid "items in cart"
+msgstr "items in cart"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Last name"
+msgstr "Last name"
+
+msgid "Latest News & Promotions"
+msgstr "Latest News & Promotions"
+
+msgid "Latest updates from the restaurant."
+msgstr "Latest updates from the restaurant."
+
+msgid "Log In"
+msgstr "Log In"
+
+msgid "Log Out"
+msgstr "Log Out"
+
+msgid "Manage in Orders"
+msgstr "Manage in Orders"
+
+msgid "Manage your account information."
+msgstr "Manage your account information."
+
+msgid "Manager confirmation code"
+msgstr "Manager confirmation code"
+
+msgid "Many reviews on Google"
+msgstr "Many reviews on Google"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Network connection error."
+msgstr "Network connection error."
+
+msgid "New password"
+msgstr "New password"
+
+msgid "New password confirmation"
+msgstr "New password confirmation"
+
+msgid "News"
+msgstr "News"
+
+msgid "News & Promotions"
+msgstr "News & Promotions"
+
+msgid "No data for this time period."
+msgstr "No data for this time period."
+
+msgid "No items in this category yet."
+msgstr "No items in this category yet."
+
+msgid "No news yet"
+msgstr "No news yet"
+
+msgid "No orders for this time period."
+msgstr "No orders for this time period."
+
+msgid "No orders found."
+msgstr "No orders found."
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Online payment"
+msgstr "Online payment"
+
+msgid "Open menu"
+msgstr "Open menu"
+
+msgid "Optional notes"
+msgstr "Optional notes"
+
+msgid "Order"
+msgstr "Order"
+
+msgid "Order #%(number)s -> %(status)s"
+msgstr "Order #%(number)s -> %(status)s"
+
+msgid "Order #%(number)s cannot be advanced further."
+msgstr "Order #%(number)s cannot be advanced further."
+
+msgid "Order #%(number)s cannot be cancelled in its current status."
+msgstr "Order #%(number)s cannot be cancelled in its current status."
+
+msgid "Order #%(number)s has been cancelled."
+msgstr "Order #%(number)s has been cancelled."
+
+msgid "Order #%(number)s has been received"
+msgstr "Order #%(number)s has been received"
+
+msgid "Order Confirmation"
+msgstr "Order Confirmation"
+
+msgid "Order Details"
+msgstr "Order Details"
+
+msgid "Order History"
+msgstr "Order History"
+
+msgid "Order Management"
+msgstr "Order Management"
+
+msgid "Order Now"
+msgstr "Order Now"
+
+msgid "Order time"
+msgstr "Order time"
+
+msgid "Order-by-order breakdown for the selected period."
+msgstr "Order-by-order breakdown for the selected period."
+
+msgid "Orders"
+msgstr "Orders"
+
+msgid "Orders by Status"
+msgstr "Orders by Status"
+
+msgid "Out of stock"
+msgstr "Out of stock"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Password change"
+msgstr "Password change"
+
+msgid "Password Change Successful"
+msgstr "Password Change Successful"
+
+msgid "Password change successful"
+msgstr "Password change successful"
+
+msgid "Password confirmation"
+msgstr "Password confirmation"
+
+msgid "Password reset complete"
+msgstr "Password reset complete"
+
+msgid "Payment"
+msgstr "Payment"
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "Phone number"
+msgstr "Phone number"
+
+msgid "Phone number is required."
+msgstr "Phone number is required."
+
+msgid "Pickup"
+msgstr "Pickup"
+
+msgid "Placed on"
+msgstr "Placed on"
+
+msgid "Please enter a delivery address."
+msgstr "Please enter a delivery address."
+
+msgid "Preparing"
+msgstr "Preparing"
+
+msgid "Price (₫)"
+msgstr "Price (₫)"
+
+msgid "Proceed to Checkout"
+msgstr "Proceed to Checkout"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Profile updated successfully."
+msgstr "Profile updated successfully."
+
+msgid "Publish"
+msgstr "Publish"
+
+msgid "Quantity"
+msgstr "Quantity"
+
+msgid "Read More"
+msgstr "Read More"
+
+msgid "Recipient"
+msgstr "Recipient"
+
+msgid "Related News"
+msgstr "Related News"
+
+msgid "Remove from cart"
+msgstr "Remove from cart"
+
+msgid "Reports"
+msgstr "Reports"
+
+msgid "Required unless you are a senior manager (superuser)."
+msgstr "Required unless you are a senior manager (superuser)."
+
+msgid "Restaurant location on Google Maps"
+msgstr "Restaurant location on Google Maps"
+
+msgid "Revenue"
+msgstr "Revenue"
+
+msgid "Review your items before checkout."
+msgstr "Review your items before checkout."
+
+msgid "Reward points"
+msgstr "Reward points"
+
+msgid "Sales Details"
+msgstr "Sales Details"
+
+msgid "Save Changes"
+msgstr "Save Changes"
+
+msgid "See reviews from real customers on Google Maps."
+msgstr "See reviews from real customers on Google Maps."
+
+msgid "Send reset instructions"
+msgstr "Send reset instructions"
+
+msgid "serving"
+msgstr "serving"
+
+msgid "Set a new password"
+msgstr "Set a new password"
+
+msgid "Set new password"
+msgstr "Set new password"
+
+msgid "Sign Up"
+msgstr "Sign Up"
+
+msgid "Sign Up Now"
+msgstr "Sign Up Now"
+
+msgid "Some items are no longer available: %(names)s. Please update your cart."
+msgstr "Some items are no longer available: %(names)s. Please update your cart."
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Tap to view all orders"
+msgstr "Tap to view all orders"
+
+msgid "Thank You!"
+msgstr "Thank You!"
+
+msgid "The hot pot broth is sweet, sour, and light — very enjoyable. The beef is tender and fresh, vegetables are clean. The restaurant is not too crowded, atmosphere is comfortable, staff are enthusiastic. I will come back to support."
+msgstr "The hot pot broth is sweet, sour, and light — very enjoyable. The beef is tender and fresh, vegetables are clean. The restaurant is not too crowded, atmosphere is comfortable, staff are enthusiastic. I will come back to support."
+
+msgid "This is the only vinegar hot pot in Can Tho that truly matches my taste. The flavor is balanced, not overly sour. Meat and vegetables are fresh. Always supporting!"
+msgstr "This is the only vinegar hot pot in Can Tho that truly matches my taste. The flavor is balanced, not overly sour. Meat and vegetables are fresh. Always supporting!"
+
+msgid "This Month"
+msgstr "This Month"
+
+msgid "This Week"
+msgstr "This Week"
+
+msgid "This Year"
+msgstr "This Year"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Title (English)"
+msgstr "Title (English)"
+
+msgid "Title (Vietnamese)"
+msgstr "Title (Vietnamese)"
+
+msgid "Titles stay in Vietnamese. Add English content for EN mode, or leave blank to auto-translate."
+msgstr "Titles stay in Vietnamese. Add English content for EN mode, or leave blank to auto-translate."
+
+msgid "Today"
+msgstr "Today"
+
+msgid "Top Selling Items"
+msgstr "Top Selling Items"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "total"
+msgstr "total"
+
+msgid "Total Orders"
+msgstr "Total Orders"
+
+msgid "Total Sales"
+msgstr "Total Sales"
+
+msgid "Track orders and earn reward points on future visits!"
+msgstr "Track orders and earn reward points on future visits!"
+
+msgid "Traditional Vietnamese Cuisine"
+msgstr "Traditional Vietnamese Cuisine"
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Video (optional)"
+msgstr "Video (optional)"
+
+msgid "View All News"
+msgstr "View All News"
+
+msgid "View All Reviews"
+msgstr "View All Reviews"
+
+msgid "View Details"
+msgstr "View Details"
+
+msgid "View Full Menu"
+msgstr "View Full Menu"
+
+msgid "View Menu"
+msgstr "View Menu"
+
+msgid "View Sales Details"
+msgstr "View Sales Details"
+
+msgid "View your past orders and their status."
+msgstr "View your past orders and their status."
+
+msgid "Watch Video"
+msgstr "Watch Video"
+
+msgid "We've emailed you instructions for resetting your password. You should receive it shortly!"
+msgstr "We've emailed you instructions for resetting your password. You should receive it shortly!"
+
+msgid "Welcome to Bò Nhúng Giấm Ngày Xưa!"
+msgstr "Welcome to Bò Nhúng Giấm Ngày Xưa!"
+
+msgid "Write a Review"
+msgstr "Write a Review"
+
+msgid "You have no orders yet."
+msgstr "You have no orders yet."
+
+msgid "Your browser does not support the video tag."
+msgstr "Your browser does not support the video tag."
+
+msgid "Your cart is empty."
+msgstr "Your cart is empty."
+
+msgid "Your new password has been set."
+msgstr "Your new password has been set."
+
+msgid "Your Order"
+msgstr "Your Order"
+
+msgid "Your password was changed."
+msgstr "Your password was changed."
+

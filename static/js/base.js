@@ -26,18 +26,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Animate fade-in elements
-    document.querySelectorAll('.fade-in').forEach(el => {
-        el.classList.add('active');
-    });
-
-    // Smooth scroll for anchor links
-    // (native scrollIntoView — no ScrollToPlugin required)
+    // Smooth scroll for in-page anchor links (skip placeholder href="#")
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const href = this.getAttribute('href');
+            if (!href || href === '#' || href === '#!') {
+                return;
+            }
+            const target = document.querySelector(href);
             if (target) {
+                e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth' });
             }
         });
@@ -142,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const itemName = this.dataset.itemName;
 
             button.disabled = true;
-            button.textContent = 'Đang thêm...';
+            button.textContent = button.dataset.loadingText || (window.I18N && window.I18N.adding) || '...';
 
             const formData = new FormData(this);
 
@@ -155,28 +153,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: formData,
                 credentials: 'same-origin'
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || (window.I18N && window.I18N.addToCartError) || 'Error');
+                    }).catch(() => {
+                        throw new Error((window.I18N && window.I18N.addToCartError) || 'Error');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
-                    // Update both cart badges (nav icon + sidebar link),
-                    // creating them if the cart was empty on page load
-                    // (Django doesn't render the <span> at all when count is 0).
                     updateCartBadge('cart-count', data.cart_total_items, '.cart-link');
                     updateCartBadge('cart-count-sidebar', data.cart_total_items, '.sidebar-cart-link');
 
-                    showToast(`✓ Đã thêm "${itemName}" vào giỏ hàng!`, 'success');
+                    const toastMsg = data.message || `✓ ${itemName}`;
+                    showToast(toastMsg, 'success');
 
                     button.disabled = false;
                     button.textContent = originalText;
                 } else {
-                    showToast(data.error || 'Lỗi khi thêm vào giỏ hàng', 'error');
+                    showToast(data.error || (window.I18N && window.I18N.addToCartError) || 'Error', 'error');
                     button.disabled = false;
                     button.textContent = originalText;
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showToast('Lỗi kết nối mạng', 'error');
+                showToast(error.message || (window.I18N && window.I18N.networkError) || 'Error', 'error');
                 button.disabled = false;
                 button.textContent = originalText;
             });
@@ -188,6 +193,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // to cart, since Django only renders the badge when cart_count > 0).
     function updateCartBadge(id, count, containerSelector) {
         let badge = document.getElementById(id);
+        if (count <= 0) {
+            if (badge) badge.remove();
+            return;
+        }
         if (badge) {
             badge.textContent = count;
             return;

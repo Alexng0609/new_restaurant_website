@@ -1,32 +1,32 @@
+{% load i18n %}
 {% comment %}
 Shared news-card media block: video / image / no-media fallback, each with
-its matching overlay. This was previously copy-pasted identically into
-feeds.html and index.html. Usage:
+its matching overlay. Usage:
 
     {% include "news_media.html" with news=news %}
 {% endcomment %}
 {% if news.video %}
     <video autoplay loop muted playsinline preload="auto">
         <source src="{{ news.video.url }}" type="video/mp4">
-        Your browser does not support the video tag.
+        {% trans "Your browser does not support the video tag." %}
     </video>
     <div class="corner-badge video-badge">
-        🎬 Video
+        🎬 {% trans "Video" %}
     </div>
     <div class="news-overlay">
         <i class="fas fa-play-circle"></i>
-        Xem Video
+        {% trans "Watch Video" %}
     </div>
 {% elif news.image %}
-    <img src="{{ news.image.url }}" alt="{{ news.title }}">
+    <img src="{{ news.image.url }}" alt="{{ news.get_localized_title }}">
     <div class="news-overlay">
         <i class="fas fa-arrow-right"></i>
-        Đọc Thêm
+        {% trans "Read More" %}
     </div>
 {% else %}
     <div class="no-media-icon">📰</div>
     <div class="news-overlay">
         <i class="fas fa-arrow-right"></i>
-        Đọc Thêm
+        {% trans "Read More" %}
     </div>
 {% endif %}

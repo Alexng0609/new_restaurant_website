@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile" %} - Bò Nhúng Giấm Ngày Xưa{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{% trans "Profile" %}</h1>
+    <p>{% trans "Manage your account information." %}</p>
+</div>
+
+<div class="detail-panel form-card">
+    <div class="profile-meta">
+        <p><strong>{% trans "Username" %}:</strong> {{ username }}</p>
+        <p><strong>{% trans "Reward points" %}:</strong> {{ points }}</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="form-errors">{{ field.errors }}</div>{% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button class="add-btn" type="submit">{% trans "Save Changes" %}</button>
+            <a href="{% url 'password_change' %}" class="view-reviews-btn">{% trans "Change Password" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}
