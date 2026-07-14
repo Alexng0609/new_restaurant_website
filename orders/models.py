@@ -139,6 +139,24 @@ class Order(models.Model):
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING
     )
+
+    # Linear pipeline a staff-managed order moves through. Cancelled is reachable
+    # from any state but isn't part of the "forward" flow, so it's excluded here.
+    STATUS_FLOW = [STATUS_PENDING, STATUS_CONFIRMED, STATUS_PREPARING, STATUS_DELIVERED]
+
+    # Cancellation audit trail - non-superuser staff need an admin code to cancel
+    # (see CancelOrderForm), and a reason is always required so this is reviewable later.
+    cancellation_reason = models.TextField(
+        blank=True, help_text="Lý do hủy đơn - dùng để xem lại sau"
+    )
+    cancelled_at = models.DateTimeField(null=True, blank=True)
+    cancelled_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="cancelled_orders",
+    )
     total_price = models.DecimalField(
         max_digits=10, decimal_places=0, validators=[MinValueValidator(Decimal("0"))]
     )
@@ -151,6 +169,21 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.order_number} - {self.customer_name}"
+
+    def get_next_status(self):
+        """Returns the next status in the pipeline, or None if there isn't one
+        (already delivered, or cancelled - cancelled orders don't advance)."""
+        if self.status not in self.STATUS_FLOW:
+            return None
+        current_index = self.STATUS_FLOW.index(self.status)
+        if current_index + 1 >= len(self.STATUS_FLOW):
+            return None
+        return self.STATUS_FLOW[current_index + 1]
+
+    def get_next_status_label(self):
+        """Human-readable label for get_next_status(), for button text in templates."""
+        next_status = self.get_next_status()
+        return dict(self.STATUS_CHOICES).get(next_status) if next_status else None
 
     def calculate_total(self):
         """Recompute total_price from this order's existing OrderItems.

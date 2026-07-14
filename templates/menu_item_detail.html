@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}{{ item.name }} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="section-cta">
+    <a href="{% url 'menu' %}" class="view-reviews-btn">
+        <i class="fas fa-arrow-left"></i> Quay Lại Thực Đơn
+    </a>
+</div>
+
+<div class="detail-panel menu-item-detail">
+    {% if staff_role == 'manager' or staff_role == 'admin' %}
+    <div class="admin-controls">
+        <a href="/admin/restaurant/menuitem/{{ item.id }}/change/" class="admin-btn">
+            ✏️ Sửa
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="news-card-media">
+        {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+        {% else %}
+            <div class="no-media-icon">🍜</div>
+        {% endif %}
+        <div class="corner-badge category-tag-overlay">
+            {{ item.category.name }}
+        </div>
+    </div>
+
+    <div class="news-card-content">
+        <h1 class="news-title">{{ item.name }}</h1>
+        <p class="news-text">{{ item.description }}</p>
+
+        <div class="price-tag">{{ item.price|vnd_format }} ₫</div>
+
+        <div class="availability {% if item.is_available %}available{% else %}unavailable{% endif %}">
+            {% if item.is_available %}
+                <i class="fas fa-check-circle"></i> Còn Hàng
+            {% else %}
+                <i class="fas fa-times-circle"></i> Hết Hàng
+            {% endif %}
+        </div>
+
+        <!-- Add to cart form -->
+        <form class="add-btn-form add-to-cart-form" method="post" action="{% url 'add_to_cart' item.id %}" data-item-name="{{ item.name }}">
+            {% csrf_token %}
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="add-btn" {% if not item.is_available %}disabled{% endif %}>
+                ➕ Thêm vào giỏ
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Toast container for add-to-cart feedback -->
+<div id="toast-container"></div>
+{% endblock %}

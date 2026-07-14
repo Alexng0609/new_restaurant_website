@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Báo Cáo - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📊 Báo Cáo</h1>
+</div>
+
+<div class="category-filter">
+    {% for value, label in period_choices %}
+    <a href="{% url 'staff_reports' %}?period={{ value }}"
+       class="category-btn {% if period == value %}active{% endif %}">
+        {{ label }}
+    </a>
+    {% endfor %}
+    <a href="{% url 'staff_reports_export' %}?period={{ period }}" class="view-reviews-btn">
+        <i class="fas fa-file-csv"></i> Xuất CSV
+    </a>
+</div>
+
+<div class="grid grid-lg">
+    <div class="item-card">
+        <h3>Doanh Thu</h3>
+        <p class="price">{{ total_revenue|vnd_format }} ₫</p>
+    </div>
+    <div class="item-card">
+        <h3>Tổng Đơn Hàng</h3>
+        <p class="price">{{ total_orders }}</p>
+    </div>
+    <div class="item-card">
+        <h3>Đơn Hoàn Thành</h3>
+        <p class="price">{{ completed_count }}</p>
+    </div>
+    <div class="item-card">
+        <h3>Đơn Hủy</h3>
+        <p class="price">{{ cancelled_count }}</p>
+    </div>
+    <div class="item-card">
+        <h3>Giá Trị TB / Đơn</h3>
+        <p class="price">{{ avg_order_value|vnd_format }} ₫</p>
+    </div>
+</div>
+
+<h2 class="section-title">Đơn Hàng Theo Trạng Thái</h2>
+<div class="grid grid-lg">
+    {% for row in status_breakdown %}
+    <div class="item-card">
+        <h3>{{ row.label }}</h3>
+        <p class="price">{{ row.count }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<h2 class="section-title">Món Bán Chạy Nhất</h2>
+{% if top_items %}
+<div class="grid grid-lg">
+    {% for item in top_items %}
+    <div class="item-card">
+        <h3>{{ item.item_name }}</h3>
+        <p>Số lượng: {{ item.total_qty }}</p>
+        <p class="price">{{ item.total_revenue|vnd_format }} ₫</p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>Chưa có dữ liệu cho khoảng thời gian này.</p>
+</div>
+{% endif %}
+{% endblock %}

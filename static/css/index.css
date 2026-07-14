@@ -116,21 +116,35 @@
     gap: 0.3rem;
     margin-top: 0.5rem;
 }
-
-/* Featured item cards */
-.item-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-align: center;
-    box-shadow: 0 4px 6px var(--shadow);
-    transition: transform 0.3s;
-    border: 1px solid var(--border-color);
+.news-card-compact {
+    height: 340px;
 }
 
-.item-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px var(--shadow);
+.news-card-compact .news-card-media {
+    height: 160px;
+}
+
+.news-card-content h3 {
+    /* overrides with line clamp */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-card-content p {
+    /* overrides with line clamp */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+/* Featured item cards. Shell (bg/radius/shadow/border/hover) now comes
+   from base.css's .card — pair as class="card item-card" in markup.
+   Only the item-specific bits (padding, centering) stay here. */
+.item-card {
+    padding: 1.5rem;
+    text-align: center;
 }
 
 .item-card h3 {
@@ -295,24 +309,16 @@
     color: var(--primary-color);
 }
 
-.sample-reviews {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
+/* Same repeat(auto-fit, minmax(300px, 1fr)) grid as base.css's .grid —
+   reuse it: class="grid sample-reviews" in markup instead of
+   redefining the grid here. */
 
+/* Shell (bg/radius/shadow/border/hover) now comes from base.css's .card —
+   pair as class="card review-card" in markup. Only padding stays here.
+   (This also fixes a drift: this card had a 2px border/12px shadow blur
+   vs. 1px/6px everywhere else — now consistent via .card.) */
 .review-card {
-    background: var(--card-bg);
     padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px var(--shadow);
-    border: 2px solid var(--border-color);
-    transition: var(--transition);
-}
-
-.review-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px var(--shadow);
 }
 
 .review-header {

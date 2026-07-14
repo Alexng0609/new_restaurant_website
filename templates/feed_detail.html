@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.title }} - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block content %}
+<div class="section-cta">
+    <a href="{% url 'feeds' %}" class="view-reviews-btn">
+        <i class="fas fa-arrow-left"></i> Quay Lại Tin Tức
+    </a>
+</div>
+
+<div class="detail-panel news-card-detail">
+    {% if staff_role == 'manager' or staff_role == 'admin' %}
+    <div class="admin-controls">
+        <a href="/admin/restaurant/newsfeed/{{ news.id }}/change/" class="admin-btn">
+            <i class="fas fa-edit"></i> Sửa
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="news-card-media">
+        {% include "news_media.html" with news=news %}
+    </div>
+
+    <div class="news-card-content">
+        <div class="news-date">
+            📅 {{ news.created_at|date:"d/m/Y" }}
+        </div>
+        <h1 class="news-title">{{ news.title }}</h1>
+        <div class="news-text">{{ news.content|linebreaks }}</div>
+    </div>
+</div>
+{% endblock %}

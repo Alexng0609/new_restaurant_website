@@ -1,6 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load custom_filters %}
 
 {% block title %}Xác Nhận Đơn Hàng - Bò Nhúng Giấm Ngày Xưa{% endblock %}
 
@@ -12,6 +10,7 @@
 
 <div class="review-summary">
     <p><strong>Trạng thái:</strong> {{ order.get_status_display }}</p>
+    <p><strong>Thời gian đặt hàng:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
     <p><strong>Người nhận:</strong> {{ order.customer_name }}</p>
     <p><strong>Điện thoại:</strong> {{ order.customer_phone }}</p>
     <p><strong>Email:</strong> {{ order.customer_email }}</p>
@@ -31,14 +30,14 @@
     {% for order_item in order.items.all %}
     <div class="item-card">
         <h3>{{ order_item.item_name }}</h3>
-        <p>{{ order_item.quantity }} x {{ order_item.item_price|vnd_format }} ₫</p>
-        <p class="price">{{ order_item.subtotal|vnd_format }} ₫</p>
+        <p>{{ order_item.quantity }} x {{ order_item.item_price|floatformat:0 }} ₫</p>
+        <p class="price">{{ order_item.subtotal|floatformat:0 }} ₫</p>
     </div>
     {% endfor %}
 </div>
 
 <div class="cta-section">
-    <h2>Tổng Cộng: {{ order.total_price|vnd_format }} ₫</h2>
+    <h2>Tổng Cộng: {{ order.total_price|floatformat:0 }} ₫</h2>
 </div>
 
 {% if show_account_invite %}

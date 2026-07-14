@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Quản Lý Đơn Hàng - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Quản Lý Đơn Hàng</h1>
+</div>
+
+<div class="category-filter">
+    <a href="{% url 'staff_order_list' %}" class="category-btn {% if not selected_status %}active{% endif %}">
+        Tất Cả
+    </a>
+    {% for value, label in status_choices %}
+        <a href="{% url 'staff_order_list' %}?status={{ value }}"
+           class="category-btn {% if selected_status == value %}active{% endif %}">
+            {{ label }}
+        </a>
+    {% endfor %}
+</div>
+
+{% if orders %}
+<div class="grid grid-lg">
+    {% for order in orders %}
+    <div class="item-card">
+        <h3>Đơn #{{ order.order_number }}</h3>
+        <p>{{ order.customer_name }} — {{ order.customer_phone }}</p>
+        <p>
+            {{ order.get_fulfillment_type_display }}
+            {% if order.fulfillment_type == 'delivery' %}: {{ order.delivery_address }}{% endif %}
+        </p>
+        <p>Đặt lúc: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+        <p>Trạng thái: <strong>{{ order.get_status_display }}</strong></p>
+        {% if order.status == 'cancelled' %}
+        <p>Lý do hủy: {{ order.cancellation_reason }}</p>
+        <p>Hủy lúc: {{ order.cancelled_at|date:"d/m/Y H:i" }} — bởi {{ order.cancelled_by }}</p>
+        {% endif %}
+
+        <ul>
+            {% for order_item in order.items.all %}
+            <li>{{ order_item.quantity }} x {{ order_item.item_name }}</li>
+            {% endfor %}
+        </ul>
+
+        <p class="price">{{ order.total_price|vnd_format }} ₫</p>
+
+        {% if order.get_next_status %}
+        <form method="post" action="{% url 'advance_order_status' order.order_number %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button type="submit" class="view-reviews-btn">
+                Chuyển Sang: {{ order.get_next_status_label }}
+            </button>
+        </form>
+        {% endif %}
+
+        {% if order.status != 'delivered' and order.status != 'cancelled' %}
+        <a href="{% url 'cancel_order_status' order.order_number %}" class="admin-btn">Hủy Đơn</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>Không có đơn hàng nào.</p>
+</div>
+{% endif %}
+{% endblock %}

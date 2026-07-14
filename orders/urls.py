@@ -21,4 +21,22 @@ urlpatterns = [
         views.OrderConfirmationView.as_view(),
         name="order_confirmation",
     ),
+    # Staff order management
+    path("staff/orders/", views.OrderManagementView.as_view(), name="staff_order_list"),
+    path(
+        "staff/orders/<str:order_number>/advance/",
+        views.AdvanceOrderStatusView.as_view(),
+        name="advance_order_status",
+    ),
+    path(
+        "staff/orders/<str:order_number>/cancel/",
+        views.CancelOrderStatusView.as_view(),
+        name="cancel_order_status",
+    ),
+    path("staff/reports/", views.ReportsView.as_view(), name="staff_reports"),
+    path(
+        "staff/reports/export/",
+        views.ReportsExportView.as_view(),
+        name="staff_reports_export",
+    ),
 ]

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thêm Món Ăn Mới - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>🍽️ Thêm Món Ăn Mới</h1>
+</div>
+
+<div class="detail-panel form-card">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Tên Món</label>
+            {{ form.name }}
+            {% if form.name.errors %}<div class="form-errors">{{ form.name.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.description.id_for_label }}">Mô Tả</label>
+            {{ form.description }}
+            {% if form.description.errors %}<div class="form-errors">{{ form.description.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.price.id_for_label }}">Giá (₫)</label>
+            {{ form.price }}
+            {% if form.price.errors %}<div class="form-errors">{{ form.price.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.category.id_for_label }}">Danh Mục</label>
+            {{ form.category }}
+            {% if form.category.errors %}<div class="form-errors">{{ form.category.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.image.id_for_label }}">Hình Ảnh (không bắt buộc)</label>
+            {{ form.image }}
+            {% if form.image.errors %}<div class="form-errors">{{ form.image.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-group form-check">
+            {{ form.is_available }}
+            <label for="{{ form.is_available.id_for_label }}">Còn Hàng</label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="add-btn">Thêm Món</button>
+            <a href="{% url 'menu' %}" class="view-reviews-btn">Hủy</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

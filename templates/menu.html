@@ -14,9 +14,9 @@
     <h1>🍽️ Thực Đơn</h1>
 </div>
 
-{% if user.is_staff %}
+{% if staff_role == 'manager' or staff_role == 'admin' %}
 <div class="admin-add-button">
-    <a href="/admin/restaurant/menuitem/add/" class="view-reviews-btn">
+    <a href="{% url 'menu_item_add' %}" class="view-reviews-btn">
         <i class="fas fa-plus-circle"></i> Thêm Món Ăn
     </a>
 </div>
@@ -38,9 +38,9 @@
 <div class="grid grid-lg">
     {% for item in menu_items %}
 
-    <div class="news-card">
+    <div class="card news-card">
 
-        {% if user.is_staff %}
+        {% if staff_role == 'manager' or staff_role == 'admin' %}
         <div class="admin-controls">
             <a href="/admin/restaurant/menuitem/{{ item.id }}/change/"
                class="admin-btn">
@@ -58,7 +58,7 @@
                 {% endif %}
             </div>
 
-            <div class="category-tag-overlay">
+            <div class="corner-badge category-tag-overlay">
                 {{ item.category.name }}
             </div>
         </a>

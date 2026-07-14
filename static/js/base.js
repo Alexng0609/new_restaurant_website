@@ -158,15 +158,11 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update cart badges (sidebar link + top-right toggle button)
-                    const cartBadge = document.getElementById('cart-count');
-                    if (cartBadge) {
-                        cartBadge.textContent = data.cart_total_items;
-                    }
-                    const toggleBadge = document.getElementById('cart-count-badge');
-                    if (toggleBadge) {
-                        toggleBadge.textContent = data.cart_total_items;
-                    }
+                    // Update both cart badges (nav icon + sidebar link),
+                    // creating them if the cart was empty on page load
+                    // (Django doesn't render the <span> at all when count is 0).
+                    updateCartBadge('cart-count', data.cart_total_items, '.cart-link');
+                    updateCartBadge('cart-count-sidebar', data.cart_total_items, '.sidebar-cart-link');
 
                     showToast(`✓ Đã thêm "${itemName}" vào giỏ hàng!`, 'success');
 
@@ -186,6 +182,25 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+    // Updates a cart badge <span> by id, creating it inside the given
+    // container if it doesn't exist yet (happens on the very first add
+    // to cart, since Django only renders the badge when cart_count > 0).
+    function updateCartBadge(id, count, containerSelector) {
+        let badge = document.getElementById(id);
+        if (badge) {
+            badge.textContent = count;
+            return;
+        }
+        const container = document.querySelector(containerSelector);
+        if (!container) return;
+
+        badge = document.createElement('span');
+        badge.className = 'cart-badge';
+        badge.id = id;
+        badge.textContent = count;
+        container.appendChild(badge);
+    }
 
     // Toast notification helper — used by the add-to-cart handler above.
     // Guarded on #toast-container so it's harmless on pages without one.

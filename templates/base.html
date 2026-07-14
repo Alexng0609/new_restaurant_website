@@ -66,19 +66,24 @@
             <li><a href="{% url 'feeds' %}"><i class="fas fa-newspaper"></i> Tin Tức</a></li>
             <li><a href="{% url 'menu' %}"><i class="fas fa-utensils"></i> Thực Đơn</a></li>
             <li>
-                <a href="#">
+                <a href="{% url 'cart_detail' %}" class ="sidebar-cart-link">
                     <i class="fas fa-shopping-cart"></i> Giỏ Hàng
                     {% if cart_count > 0 %}
-                    <span class="cart-badge">{{ cart_count }}</span>
+                    <span class="cart-badge" id="cart-count-sidebar">{{ cart_count }}</span>
                     {% endif %}
                 </a>
             </li>
 
             {% if user.is_authenticated %}
                 {% if user.is_staff %}
-                    <!-- Orders + reports management for admin -->
-                    <li><a href="#"><i class="fas fa-clipboard-list"></i> Đơn Hàng</a></li>
-                    <li><a href="#"><i class="fas fa-chart-column"></i> Báo Cáo</a></li>
+                    <!-- Every staff level sees the order dashboard. Menu/feeds
+                         editing (visible inside menu.html/feeds.html itself,
+                         not a separate sidebar link) is manager+ only.
+                         Reports stay admin-only. -->
+                    <li><a href="{% url 'staff_order_list' %}"><i class="fas fa-clipboard-list"></i> Đơn Hàng</a></li>
+                    {% if user.is_superuser %}
+                    <li><a href="{% url 'staff_reports' %}"><i class="fas fa-chart-column"></i> Báo Cáo</a></li>
+                    {% endif %}
                 {% else %}
                     <!-- History + profile for regular users -->
                     <li><a href="#"><i class="fas fa-clock-rotate-left"></i> Lịch Sử</a></li>

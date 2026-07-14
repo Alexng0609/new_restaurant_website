@@ -31,15 +31,14 @@
 }
 
 /* Sits top-right (base.css's .admin-controls sits top-left) so the two
-   never overlap — no override of .admin-controls needed. */
+   never overlap — no override of .admin-controls needed.
+   Position/shape now comes from base.css's .corner-badge — pair as
+   class="corner-badge category-tag-overlay" in markup. Only the
+   things that make this badge distinct (color, pill shape, weight)
+   stay here. */
 .category-tag-overlay {
-    position: absolute;
-    top: 12px;
-    right: 12px;
     background: rgba(212, 168, 67, 0.95);
-    color: white;
     padding: 6px 14px;
-    font-size: 0.85rem;
     border-radius: 20px;
     font-weight: 700;
     z-index: 20;

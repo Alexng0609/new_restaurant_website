@@ -9,9 +9,9 @@
     <p>Cập nhật tin tức mới nhất từ nhà hàng</p>
 </div>
 
-{% if user.is_staff %}
+{% if staff_role == 'manager' or staff_role == 'admin' %}
 <div class="admin-add-button">
-    <a href="/admin/restaurant/newsfeed/add/" class="view-reviews-btn">
+    <a href="{% url 'feed_add' %}" class="view-reviews-btn">
         <i class="fas fa-plus-circle"></i> Thêm Tin Tức Mới
     </a>
 </div>
@@ -21,7 +21,7 @@
     {% if news_feeds %}
         {% for news in news_feeds %}
         <div class="news-card-wrapper">
-            {% if user.is_staff %}
+            {% if staff_role == 'manager' or staff_role == 'admin' %}
             <div class="admin-controls">
                 <a href="/admin/restaurant/newsfeed/{{ news.id }}/change/" class="admin-btn">
                     <i class="fas fa-edit"></i> Sửa
@@ -29,36 +29,9 @@
             </div>
             {% endif %}
 
-            <a href="{% url 'feed_detail' news.id %}" class="news-card">
+            <a href="{% url 'feed_detail' news.id %}" class="card news-card">
                 <div class="news-card-media">
-                    {% if news.video %}
-                        <!-- Video Display with Autoplay -->
-                        <video autoplay loop muted playsinline preload="metadata">
-                            <source src="{{ news.video.url }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="video-badge">
-                            🎬 Video
-                        </div>
-                        <div class="news-overlay">
-                            <i class="fas fa-play-circle"></i>
-                            Xem Video
-                        </div>
-                    {% elif news.image %}
-                        <!-- Image Display -->
-                        <img src="{{ news.image.url }}" alt="{{ news.title }}">
-                        <div class="news-overlay">
-                            <i class="fas fa-arrow-right"></i>
-                            Đọc Thêm
-                        </div>
-                    {% else %}
-                        <!-- No Media -->
-                        <div class="no-media-icon">📰</div>
-                        <div class="news-overlay">
-                            <i class="fas fa-arrow-right"></i>
-                            Đọc Thêm
-                        </div>
-                    {% endif %}
+                    {% include "news_media.html" with news=news %}
                 </div>
 
                 <div class="news-card-content">

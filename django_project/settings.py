@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,11 +28,21 @@ SECRET_KEY = "django-insecure-ny_*10sr)9l3w^=nab8bs2qac-5+ud-)2st5@^)1t(m5m-_01o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "192.168.1.9",
+    "fondness-flogging-enslave.ngrok-free.dev",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://fondness-flogging-enslave.ngrok-free.dev",
+]
 
+load_dotenv()
 AUTH_USER_MODEL = "accounts.CustomUser"
 
 LOGIN_REDIRECT_URL = "index"
+LOGIN_URL = "login"
 LOGOUT_REDIRECT_URL = "index"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -38,9 +51,13 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+ADMIN_CANCEL_CODE = os.getenv(
+    "ADMIN_CANCEL_CODE", ""
+)  # Shared code for non-superuser staff to cancel orders
 
-EMAIL_BACKEND = "django.core.email.backends.console.EmailBackend"
-# Application definition
+EMAIL_BACKEND = (
+    "django.core.mail.backends.console.EmailBackend"  # Application definition
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -82,6 +99,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "orders.context_processors.cart_count",
+                "accounts.context_processors.staff_role",
             ],
         },
     },

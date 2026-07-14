@@ -1,0 +1,73 @@
+/* form.css — shared styles for the "add" forms (feed_form.html, menu_form.html).
+   Uses the same tokens as the rest of the site (--card-bg, --border-color,
+   --primary-color, --text-color) rather than a new palette. Buttons reuse
+   .add-btn and .view-reviews-btn from base.css/menu.css instead of new ones. */
+
+.form-card {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: white;
+    color: var(--text-color);
+    font: inherit;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.form-check label {
+    margin-bottom: 0;
+}
+
+.form-errors {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-actions .add-btn {
+    flex: 1;
+}

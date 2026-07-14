@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Hủy Đơn Hàng - Bò Nhúng Giấm Ngày Xưa{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Hủy Đơn #{{ order.order_number }}</h1>
+    <p>{{ order.customer_name }} — {{ order.total_price|vnd_format }} ₫</p>
+</div>
+
+<div class="review-summary">
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
+        {{ form.as_p }}
+        <button type="submit" class="admin-btn">Xác Nhận Hủy Đơn</button>
+        <a href="{% url 'staff_order_list' %}" class="view-reviews-btn">Quay Lại</a>
+    </form>
+</div>
+{% endblock %}
